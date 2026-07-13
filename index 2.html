@@ -1,1 +1,389 @@
-<html><head><meta content="text/html; charset=UTF-8" http-equiv="content-type"><style type="text/css">ol{margin:0;padding:0}table td,table th{padding:0}.c2{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:11pt;font-family:"Arial";font-style:normal}.c0{padding-top:0pt;padding-bottom:0pt;line-height:1.15;orphans:2;widows:2;text-align:left}.c3{background-color:#ffffff;max-width:451.4pt;padding:72pt 72pt 72pt 72pt}.c1{height:11pt}.title{padding-top:0pt;color:#000000;font-size:26pt;padding-bottom:3pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}.subtitle{padding-top:0pt;color:#666666;font-size:15pt;padding-bottom:16pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}li{color:#000000;font-size:11pt;font-family:"Arial"}p{margin:0;color:#000000;font-size:11pt;font-family:"Arial"}h1{padding-top:20pt;color:#000000;font-size:20pt;padding-bottom:6pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h2{padding-top:18pt;color:#000000;font-size:16pt;padding-bottom:6pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h3{padding-top:16pt;color:#434343;font-size:14pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h4{padding-top:14pt;color:#666666;font-size:12pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h5{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}h6{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;font-style:italic;orphans:2;widows:2;text-align:left}</style></head><body class="c3 doc-content"><p class="c0"><span class="c2">```html</span></p><p class="c0"><span class="c2">&lt;!DOCTYPE html&gt;</span></p><p class="c0"><span class="c2">&lt;html lang=&quot;zh-TW&quot;&gt;</span></p><p class="c0"><span class="c2">&lt;head&gt;</span></p><p class="c0"><span class="c2">&nbsp; &lt;meta charset=&quot;UTF-8&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &lt;title&gt;&#28417;&#29557;&#25136;&#32318;&#32000;&#37636;&#26412;&lt;/title&gt;</span></p><p class="c0"><span class="c2">&nbsp; &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt;</span></p><p class="c0"><span class="c2">&nbsp; &lt;script src=&quot;https://unpkg.com/vue@3/dist/vue.global.prod.js&quot;&gt;&lt;/script&gt;</span></p><p class="c0"><span class="c2">&nbsp; &lt;script src=&quot;https://unpkg.com/@phosphor-icons/web&quot;&gt;&lt;/script&gt;</span></p><p class="c0"><span class="c2">&nbsp; &lt;style&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; [v-cloak] { display: none; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; body { -webkit-tap-highlight-color: transparent; }</span></p><p class="c0"><span class="c2">&nbsp; &lt;/style&gt;</span></p><p class="c0"><span class="c2">&lt;/head&gt;</span></p><p class="c0"><span class="c2">&lt;body class=&quot;bg-slate-50 text-slate-800 font-sans pb-20&quot;&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &lt;div id=&quot;app&quot; v-cloak&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &lt;!-- Header --&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &lt;header class=&quot;bg-blue-600 text-white p-5 rounded-b-3xl shadow-lg relative overflow-hidden&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;div class=&quot;absolute top-0 right-0 opacity-10 pointer-events-none&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-fish text-[150px] transform rotate-12 translate-x-4 -translate-y-4&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;h1 class=&quot;text-2xl font-black tracking-wider flex items-center gap-2&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-fish text-orange-400&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &#28417;&#29557;&#25136;&#32318;&#32000;&#37636;&#26412;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;/h1&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;p class=&quot;text-blue-100 text-sm mt-1 opacity-90&quot;&gt;&#35352;&#37636;&#27599;&#19968;&#27425;&#30340;&#28023;&#37002;&#25506;&#38570;&#65281;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &lt;/header&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &lt;main class=&quot;p-4 max-w-md mx-auto min-h-[70vh]&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;!-- &#26032;&#22686;&#32000;&#37636;&#38913;&#31844; --&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;div v-show=&quot;activeTab === &#39;add&#39;&quot; class=&quot;space-y-5 animate-fade-in&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- &#19968;&#37749;&#23450;&#20301;&#25353;&#37397; --&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;button </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; @click=&quot;getLocationAndWeather&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :disabled=&quot;loadingLocation&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class=&quot;w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl p-6 shadow-xl shadow-orange-500/20 active:scale-95 transition-all flex flex-col items-center justify-center gap-3 relative overflow-hidden group&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;template v-if=&quot;loadingLocation&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph ph-spinner animate-spin text-4xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span class=&quot;font-bold text-lg&quot;&gt;&#35264;&#28204;&#22825;&#35937;&#33287;&#28526;&#27728;&#20013;...&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/template&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;template v-else&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;bg-white/20 p-3 rounded-full group-hover:scale-110 transition-transform&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-navigation-arrow text-4xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span class=&quot;font-black text-xl tracking-widest&quot;&gt;&#19968;&#37749;&#35264;&#28204;&#23450;&#20301; &amp; &#27683;&#35937;&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/template&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;/button&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- &#27683;&#35937;&#33287;&#23450;&#20301;&#32080;&#26524;&#21345;&#29255; --&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;div v-if=&quot;currentData&quot; class=&quot;bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4 relative&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;absolute top-0 right-0 bg-teal-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &#35264;&#28204;&#25104;&#21151;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;flex items-start gap-3 pt-2&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-map-pin text-orange-500 text-xl shrink-0 mt-1&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;text-xs text-slate-400 font-bold mb-1&quot;&gt;&#30446;&#21069;&#20301;&#32622;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;font-bold text-slate-700 leading-tight&quot;&gt;{{ currentData.address }}&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;text-[10px] text-slate-400 mt-1&quot;&gt;{{ currentData.lat.toFixed(5) }}, {{ currentData.lon.toFixed(5) }}&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;grid grid-cols-2 gap-3 pt-3 border-t border-slate-50&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;flex items-center gap-2 bg-blue-50 p-3 rounded-xl&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-thermometer text-blue-500 text-xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;text-[10px] text-slate-500 font-bold&quot;&gt;&#27683;&#28331;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;font-black text-slate-700&quot;&gt;{{ currentData.temperature }}&deg;C&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;flex items-center gap-2 bg-blue-50 p-3 rounded-xl&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-drop text-blue-500 text-xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;text-[10px] text-slate-500 font-bold&quot;&gt;&#28629;&#24230;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;font-black text-slate-700&quot;&gt;{{ currentData.humidity }}%&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;flex items-center gap-2 bg-blue-50 p-3 rounded-xl&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-gauge text-blue-500 text-xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;text-[10px] text-slate-500 font-bold&quot;&gt;&#28023;&#24179;&#38754;&#27683;&#22739;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;font-black text-slate-700&quot;&gt;{{ currentData.pressure }} &lt;span class=&quot;text-xs font-normal&quot;&gt;hPa&lt;/span&gt;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;flex items-center gap-2 bg-blue-50 p-3 rounded-xl&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-wind text-teal-500 text-xl&quot; :style=&quot;{ transform: `rotate(${currentData.windDirDeg}deg)` }&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;text-[10px] text-slate-500 font-bold&quot;&gt;&#39080;&#36895; / &#39080;&#21521;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;font-black text-slate-700 text-sm&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{ currentData.windSpeed }} &lt;span class=&quot;text-xs font-normal&quot;&gt;km/h&lt;/span&gt;&lt;br&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span class=&quot;text-xs text-teal-600&quot;&gt;{{ currentData.windDirection }}&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- &#28023;&#35937;&#28526;&#27728;&#29544;&#31435;&#19968;&#21312; --&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;bg-teal-50 rounded-xl p-3 flex items-center gap-3&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;i class=&quot;ph-fill ph-waves text-teal-600 text-2xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;text-[10px] text-teal-600 font-bold&quot;&gt;&#28023;&#35937;&#35264;&#28204;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class=&quot;font-bold text-teal-800 text-sm&quot;&gt;{{ currentData.tide }}&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- &#25163;&#21205;&#36664;&#20837;&#21312; --&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h3 class=&quot;font-bold text-slate-700 flex items-center gap-2&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-book-open-text text-blue-500 text-lg&quot;&gt;&lt;/i&gt; &#25136;&#32318;&#33287;&#31558;&#35352;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/h3&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;textarea </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; v-model=&quot;notes&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; placeholder=&quot;&#35352;&#37636;&#19968;&#19979;&#20170;&#22825;&#30340;&#28526;&#27700;&#29376;&#27841;&#12289;&#29992;&#30340;&#37347;&#32068;&#25110;&#34691;&#34809;&#31840;&#35480;&#39180;...&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class=&quot;w-full bg-slate-50 border-none rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-28 text-slate-700 placeholder:text-slate-400&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &gt;&lt;/textarea&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;label class=&quot;flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-600 p-4 rounded-xl cursor-pointer transition-colors active:scale-95 border-2 border-dashed border-slate-300&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-camera text-2xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span class=&quot;font-bold&quot;&gt;&#25293;&#25885;&#25110;&#19978;&#20659;&#29031;&#29255;&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;input type=&quot;file&quot; accept=&quot;image/*&quot; capture=&quot;environment&quot; class=&quot;hidden&quot; @change=&quot;handlePhotoUpload&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/label&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div v-if=&quot;photoBase64&quot; class=&quot;mt-4 relative rounded-xl overflow-hidden shadow-sm&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;img :src=&quot;photoBase64&quot; class=&quot;w-full h-48 object-cover&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button @click=&quot;photoBase64 = &#39;&#39;&quot; class=&quot;absolute top-2 right-2 bg-black/60 text-white p-2 rounded-full active:scale-95&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph ph-x&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/button&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;button </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; @click=&quot;saveLog&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :disabled=&quot;saving&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class=&quot;w-full bg-teal-500 text-white font-black text-lg py-4 rounded-2xl shadow-lg shadow-teal-500/30 active:scale-95 transition-transform flex items-center justify-center gap-2 disabled:opacity-70 disabled:active:scale-100&quot;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i v-if=&quot;saving&quot; class=&quot;ph ph-spinner animate-spin text-2xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i v-else class=&quot;ph-fill ph-floppy-disk text-2xl&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{ saving ? &#39;&#20786;&#23384;&#19978;&#20659;&#20013;...&#39; : &#39;&#20786;&#23384;&#36889;&#31558;&#32000;&#37636;&#39; }}</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;/button&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;!-- &#27511;&#21490;&#32000;&#37636;&#38913;&#31844; --&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;div v-show=&quot;activeTab === &#39;history&#39;&quot; class=&quot;space-y-4 animate-fade-in&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-3 sticky top-4 z-10&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;relative&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;input v-model=&quot;searchTerm&quot; type=&quot;text&quot; placeholder=&quot;&#25628;&#23563;&#38364;&#37749;&#23383;&#25110;&#22320;&#40670;...&quot; class=&quot;w-full bg-slate-50 border-none rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-400 text-slate-700&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button @click=&quot;fetchLogs&quot; class=&quot;w-full py-2 bg-blue-50 text-blue-600 font-bold rounded-xl active:scale-95 flex items-center justify-center gap-1 text-sm&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i :class=&quot;[&#39;ph ph-arrows-clockwise text-lg&#39;, { &#39;animate-spin&#39;: loadingHistory }]&quot;&gt;&lt;/i&gt; &#21047;&#26032;&#38642;&#31471;&#32000;&#37636;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/button&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;space-y-4&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div v-if=&quot;loadingHistory&quot; class=&quot;text-center py-10 text-slate-400 flex flex-col items-center&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;i class=&quot;ph ph-spinner animate-spin text-4xl mb-2&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;p&gt;&#36617;&#20837;&#20320;&#30340;&#36637;&#29004;&#25136;&#32318;&#20013;...&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div v-else-if=&quot;filteredLogs.length === 0&quot; class=&quot;text-center text-slate-400 py-10&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-fish text-5xl mx-auto mb-3 opacity-20&quot;&gt;&lt;/i&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&#30446;&#21069;&#36996;&#27794;&#26377;&#31526;&#21512;&#30340;&#32000;&#37636;&#21908;&#65281;&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div v-else v-for=&quot;(log, index) in filteredLogs&quot; :key=&quot;index&quot; class=&quot;bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 relative&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div v-if=&quot;log.photoUrl &amp;&amp; !log.photoUrl.includes(&#39;&#22833;&#25943;&#39;)&quot; class=&quot;h-48 w-full overflow-hidden bg-slate-100&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;img :src=&quot;log.photoUrl&quot; loading=&quot;lazy&quot; class=&quot;w-full h-full object-cover&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;p-4&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;flex items-center justify-between mb-2&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span class=&quot;text-xs font-bold text-white bg-blue-500 px-2 py-1 rounded-lg&quot;&gt;{{ log.dateString || &#39;&#28961;&#26085;&#26399;&#39; }}&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span class=&quot;text-xs text-slate-400&quot;&gt;{{ new Date(log.timestamp).toLocaleTimeString(&#39;zh-TW&#39;, { hour: &#39;2-digit&#39;, minute: &#39;2-digit&#39; }) }}&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p v-if=&quot;log.address&quot; class=&quot;font-bold text-slate-700 flex items-start gap-1 mb-3 text-sm&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;i class=&quot;ph-fill ph-map-pin text-orange-500 text-lg shrink-0 mt-0.5&quot;&gt;&lt;/i&gt; {{ log.address }}</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/p&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- &#27511;&#21490;&#32000;&#37636;&#27161;&#31844; --&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class=&quot;flex flex-wrap gap-2 mb-3&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span v-if=&quot;log.temperature&quot; class=&quot;text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md&quot;&gt;&lt;i class=&quot;ph-fill ph-thermometer text-blue-500&quot;&gt;&lt;/i&gt; {{ log.temperature }}&deg;C&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span v-if=&quot;log.pressure&quot; class=&quot;text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md&quot;&gt;&lt;i class=&quot;ph-fill ph-gauge text-blue-500&quot;&gt;&lt;/i&gt; {{ log.pressure }} hPa&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span v-if=&quot;log.windSpeed&quot; class=&quot;text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md&quot;&gt;&lt;i class=&quot;ph-fill ph-wind text-teal-500&quot;&gt;&lt;/i&gt; {{ log.windDirection }} {{ log.windSpeed }} km/h&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span v-if=&quot;log.tide&quot; class=&quot;text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-md w-full mt-1&quot;&gt;&lt;i class=&quot;ph-fill ph-waves&quot;&gt;&lt;/i&gt; {{ log.tide }}&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p v-if=&quot;log.notes&quot; class=&quot;text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100 whitespace-pre-wrap&quot;&gt;{{ log.notes }}&lt;/p&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &lt;/main&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &lt;nav class=&quot;fixed bottom-0 w-full bg-white border-t border-slate-100 flex justify-around p-3 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] z-50 max-w-md left-1/2 -translate-x-1/2&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;button @click=&quot;activeTab = &#39;add&#39;&quot; :class=&quot;`flex flex-col items-center p-2 rounded-xl w-24 transition-colors ${activeTab === &#39;add&#39; ? &#39;text-blue-600&#39; : &#39;text-slate-400&#39;}`&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;div :class=&quot;`p-1 rounded-full mb-1 ${activeTab === &#39;add&#39; ? &#39;bg-blue-50&#39; : &#39;&#39;}`&quot;&gt;&lt;i class=&quot;ph-fill ph-pencil-simple text-2xl&quot;&gt;&lt;/i&gt;&lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;span class=&quot;text-[10px] font-bold&quot;&gt;&#26032;&#22686;&#32000;&#37636;&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;/button&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;button @click=&quot;activeTab = &#39;history&#39;; if(logs.length===0) fetchLogs();&quot; :class=&quot;`flex flex-col items-center p-2 rounded-xl w-24 transition-colors ${activeTab === &#39;history&#39; ? &#39;text-blue-600&#39; : &#39;text-slate-400&#39;}`&quot;&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;div :class=&quot;`p-1 rounded-full mb-1 ${activeTab === &#39;history&#39; ? &#39;bg-blue-50&#39; : &#39;&#39;}`&quot;&gt;&lt;i class=&quot;ph-fill ph-book-open-text text-2xl&quot;&gt;&lt;/i&gt;&lt;/div&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &lt;span class=&quot;text-[10px] font-bold&quot;&gt;&#25136;&#32318;&#26085;&#35468;&lt;/span&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &lt;/button&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &lt;/nav&gt;</span></p><p class="c0"><span class="c2">&nbsp; &lt;/div&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &lt;script&gt;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; const { createApp, ref, computed } = Vue;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; // &#128293;&#128293;&#128293; &#12304;&#36229;&#37325;&#35201;&#35373;&#23450;&#12305; &#128293;&#128293;&#128293; &#36028;&#19978;&#20320;&#21083;&#21083;&#37325;&#26032;&#37096;&#32626;&#29554;&#24471;&#30340; GAS &#32178;&#22336;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; const GAS_URL = &#39;https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec&#39;; </span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; // &#23559;&#39080;&#21521;&#35282;&#24230;&#36681;&#25563;&#28858;&#26041;&#20301;&#25991;&#23383;&#30340;&#36628;&#21161;&#20989;&#25976;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; const getWindDirection = (degree) =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; if (degree &gt;= 337.5 || degree &lt; 22.5) return &#39;&#21271;&#39080;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; if (degree &gt;= 22.5 &amp;&amp; degree &lt; 67.5) return &#39;&#26481;&#21271;&#39080;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; if (degree &gt;= 67.5 &amp;&amp; degree &lt; 112.5) return &#39;&#26481;&#39080;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; if (degree &gt;= 112.5 &amp;&amp; degree &lt; 157.5) return &#39;&#26481;&#21335;&#39080;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; if (degree &gt;= 157.5 &amp;&amp; degree &lt; 202.5) return &#39;&#21335;&#39080;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; if (degree &gt;= 202.5 &amp;&amp; degree &lt; 247.5) return &#39;&#35199;&#21335;&#39080;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; if (degree &gt;= 247.5 &amp;&amp; degree &lt; 292.5) return &#39;&#35199;&#39080;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; if (degree &gt;= 292.5 &amp;&amp; degree &lt; 337.5) return &#39;&#35199;&#21271;&#39080;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; return &#39;&#26410;&#30693;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; };</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; createApp({</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; setup() {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const activeTab = ref(&#39;add&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const loadingLocation = ref(false);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const saving = ref(false);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const currentData = ref(null);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const notes = ref(&#39;&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const photoBase64 = ref(&#39;&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const logs = ref([]);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const loadingHistory = ref(false);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const searchTerm = ref(&#39;&#39;);</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const getLocationAndWeather = () =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!navigator.geolocation) { alert(&#39;&#28687;&#35261;&#22120;&#19981;&#25903;&#25588;&#23450;&#20301;&#65281;&#39;); return; }</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; loadingLocation.value = true;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; navigator.geolocation.getCurrentPosition(</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; async (position) =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const lat = position.coords.latitude;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const lon = position.coords.longitude;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; try {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // 1. &#25235;&#21462;&#22320;&#22336;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&amp;longitude=${lon}&amp;localityLanguage=zh-tw`);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const geoData = await geoRes.json();</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const address = geoData.locality || geoData.city || &#39;&#26410;&#30693;&#27839;&#28023;&#22320;&#21312;&#39;;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // 2. &#25235;&#21462;&#38520;&#22320;&#27683;&#35937; (&#22686;&#21152; surface_pressure &#21644; wind_direction_10m)</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&amp;longitude=${lon}&amp;current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&amp;timezone=auto`;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const weatherRes = await fetch(weatherUrl);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const weatherData = await weatherRes.json();</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const wCurrent = weatherData.current;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // 3. &#25235;&#21462;&#28023;&#35937;/&#28526;&#27728;&#36039;&#26009;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; let waveInfo = &quot;&#28961;&#38468;&#36817;&#28023;&#35937;&#35264;&#28204;&#31449;&#36039;&#26009;&quot;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; try {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&amp;longitude=${lon}&amp;current=wave_height,wave_direction,wave_period&amp;timezone=auto`;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const marineRes = await fetch(marineUrl);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const marineData = await marineRes.json();</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (marineData.current &amp;&amp; marineData.current.wave_height !== null) {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; waveInfo = `&#28010;&#39640; ${marineData.current.wave_height}m | &#36913;&#26399; ${marineData.current.wave_period}s`;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } catch (e) { console.log(&quot;&#28961;&#28023;&#35937;&#36039;&#26009;&quot;); }</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; currentData.value = {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; lat, lon,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; address: `${geoData.principalSubdivision || &#39;&#39;} ${address}`,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; temperature: wCurrent.temperature_2m,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; humidity: wCurrent.relative_humidity_2m,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; pressure: wCurrent.surface_pressure, // &#27683;&#22739;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; windSpeed: wCurrent.wind_speed_10m,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; windDirDeg: wCurrent.wind_direction_10m, // &#29992;&#26044;&#26059;&#36681;&#22294;&#31034;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; windDirection: getWindDirection(wCurrent.wind_direction_10m), // &#20013;&#25991;&#26041;&#20301;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; tide: waveInfo,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } catch (error) {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alert(&#39;&#25235;&#21462;&#35264;&#28204;&#36039;&#26009;&#22833;&#25943;&#65292;&#35531;&#30906;&#35469;&#32178;&#36335;&#36899;&#32218;&#12290;&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } finally {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; loadingLocation.value = false;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (error) =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alert(&#39;&#28961;&#27861;&#21462;&#24471;&#23450;&#20301;&#65292;&#35531;&#30906;&#35469;&#24050;&#38283;&#21855;&#25163;&#27231; GPS &#27402;&#38480;&#65281;&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; loadingLocation.value = false;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; },</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; );</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const handlePhotoUpload = (e) =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const file = e.target.files[0];</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!file) return;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const reader = new FileReader();</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; reader.readAsDataURL(file);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; reader.onload = (event) =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const img = new Image();</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; img.src = event.target.result;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; img.onload = () =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const canvas = document.createElement(&#39;canvas&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const MAX_WIDTH = 800;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; let scaleSize = 1;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (img.width &gt; MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.width = img.width * scaleSize;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.height = img.height * scaleSize;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const ctx = canvas.getContext(&#39;2d&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.drawImage(img, 0, 0, canvas.width, canvas.height);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; photoBase64.value = canvas.toDataURL(&#39;image/jpeg&#39;, 0.6);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const saveLog = async () =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!currentData.value &amp;&amp; !notes.value &amp;&amp; !photoBase64.value) {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alert(&#39;&#35531;&#33267;&#23569;&#22635;&#23531;&#31558;&#35352;&#25110;&#36914;&#34892;&#23450;&#20301;&#21908;&#65281;&#39;); return;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (GAS_URL === &#39;&#35531;&#22312;&#36889;&#35041;&#36028;&#19978;&#20320;&#30340;_GAS_&#32178;&#22336;&#39;) {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alert(&#39;&#35531;&#20808;&#22312;&#31243;&#24335;&#30908;&#20013;&#35373;&#23450; GAS_URL&#65281;&#39;); return;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; saving.value = true;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const payload = {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; dateString: new Date().toLocaleDateString(&#39;zh-TW&#39;, { year: &#39;numeric&#39;, month: &#39;2-digit&#39;, day: &#39;2-digit&#39; }),</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; notes: notes.value,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; photoBase64: photoBase64.value,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ...(currentData.value || {})</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; try {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; await fetch(GAS_URL, {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; method: &#39;POST&#39;,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; body: JSON.stringify(payload),</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; headers: { &#39;Content-Type&#39;: &#39;text/plain;charset=utf-8&#39; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; });</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alert(&#39;&#32000;&#37636;&#25104;&#21151;&#30332;&#36865;&#33267; Google &#35430;&#31639;&#34920;&#65281;&#127881;&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; currentData.value = null;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; notes.value = &#39;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; photoBase64.value = &#39;&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; await fetchLogs();</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; activeTab.value = &#39;history&#39;;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } catch (error) {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alert(&#39;&#20786;&#23384;&#22833;&#25943;&#65292;&#35531;&#27298;&#26597;&#32178;&#36335;&#12290;&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } finally {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; saving.value = false;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const fetchLogs = async () =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (GAS_URL === &#39;&#35531;&#22312;&#36889;&#35041;&#36028;&#19978;&#20320;&#30340;_GAS_&#32178;&#22336;&#39;) return;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; loadingHistory.value = true;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; try {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const response = await fetch(GAS_URL);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const data = await response.json();</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; logs.value = data.reverse();</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } catch (error) {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; alert(&#39;&#35712;&#21462;&#27511;&#21490;&#32000;&#37636;&#22833;&#25943;&#12290;&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } finally {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; loadingHistory.value = false;</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; const filteredLogs = computed(() =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return logs.value.filter(log =&gt; {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return searchTerm.value === &#39;&#39; || </span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (log.notes &amp;&amp; log.notes.toLowerCase().includes(searchTerm.value.toLowerCase())) ||</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (log.address &amp;&amp; log.address.toLowerCase().includes(searchTerm.value.toLowerCase()));</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; });</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; });</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; return {</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; activeTab, loadingLocation, saving, currentData, notes, photoBase64,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; logs, loadingHistory, searchTerm, filteredLogs,</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; getLocationAndWeather, handlePhotoUpload, saveLog, fetchLogs</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; &nbsp; };</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; &nbsp; }</span></p><p class="c0"><span class="c2">&nbsp; &nbsp; }).mount(&#39;#app&#39;);</span></p><p class="c0"><span class="c2">&nbsp; &lt;/script&gt;</span></p><p class="c0"><span class="c2">&lt;/body&gt;</span></p><p class="c0"><span class="c2">&lt;/html&gt;</span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0 c1"><span class="c2"></span></p><p class="c0"><span class="c2">```</span></p><p class="c0 c1"><span class="c2"></span></p></body></html>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>漁獵戰績紀錄本</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    [v-cloak] { display: none; }
+    body { -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans pb-20">
+
+  <div id="app" v-cloak>
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-5 rounded-b-3xl shadow-lg relative overflow-hidden">
+      <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
+        <i class="ph-fill ph-fish text-[150px] transform rotate-12 translate-x-4 -translate-y-4"></i>
+      </div>
+      <h1 class="text-2xl font-black tracking-wider flex items-center gap-2">
+        <i class="ph-fill ph-fish text-orange-400"></i>
+        漁獵戰績紀錄本
+      </h1>
+      <p class="text-blue-100 text-sm mt-1 opacity-90">記錄每一次的海邊探險！</p>
+    </header>
+
+    <main class="p-4 max-w-md mx-auto min-h-[70vh]">
+      <!-- 新增紀錄頁籤 -->
+      <div v-show="activeTab === 'add'" class="space-y-5 animate-fade-in">
+        
+        <!-- 一鍵定位按鈕 -->
+        <button 
+          @click="getLocationAndWeather"
+          :disabled="loadingLocation"
+          class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl p-6 shadow-xl shadow-orange-500/20 active:scale-95 transition-all flex flex-col items-center justify-center gap-3 relative overflow-hidden group"
+        >
+          <template v-if="loadingLocation">
+            <i class="ph ph-spinner animate-spin text-4xl"></i>
+            <span class="font-bold text-lg">觀測天象與潮汐中...</span>
+          </template>
+          <template v-else>
+            <div class="bg-white/20 p-3 rounded-full group-hover:scale-110 transition-transform">
+              <i class="ph-fill ph-navigation-arrow text-4xl"></i>
+            </div>
+            <span class="font-black text-xl tracking-widest">一鍵觀測定位 & 氣象</span>
+          </template>
+        </button>
+
+        <!-- 氣象與定位結果卡片 -->
+        <div v-if="currentData" class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4 relative">
+          <div class="absolute top-0 right-0 bg-teal-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">
+            觀測成功
+          </div>
+          
+          <div class="flex items-start gap-3 pt-2">
+            <i class="ph-fill ph-map-pin text-orange-500 text-xl shrink-0 mt-1"></i>
+            <div>
+              <p class="text-xs text-slate-400 font-bold mb-1">目前位置</p>
+              <p class="font-bold text-slate-700 leading-tight">{{ currentData.address }}</p>
+              <p class="text-[10px] text-slate-400 mt-1">{{ currentData.lat.toFixed(5) }}, {{ currentData.lon.toFixed(5) }}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 pt-3 border-t border-slate-50">
+            <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
+              <i class="ph-fill ph-thermometer text-blue-500 text-xl"></i>
+              <div>
+                <p class="text-[10px] text-slate-500 font-bold">氣溫</p>
+                <p class="font-black text-slate-700">{{ currentData.temperature }}°C</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
+              <i class="ph-fill ph-drop text-blue-500 text-xl"></i>
+              <div>
+                <p class="text-[10px] text-slate-500 font-bold">濕度</p>
+                <p class="font-black text-slate-700">{{ currentData.humidity }}%</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
+              <i class="ph-fill ph-gauge text-blue-500 text-xl"></i>
+              <div>
+                <p class="text-[10px] text-slate-500 font-bold">海平面氣壓</p>
+                <p class="font-black text-slate-700">{{ currentData.pressure }} <span class="text-xs font-normal">hPa</span></p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
+              <i class="ph-fill ph-wind text-teal-500 text-xl" :style="{ transform: `rotate(${currentData.windDirDeg}deg)` }"></i>
+              <div>
+                <p class="text-[10px] text-slate-500 font-bold">風速 / 風向</p>
+                <p class="font-black text-slate-700 text-sm">
+                  {{ currentData.windSpeed }} <span class="text-xs font-normal">km/h</span><br>
+                  <span class="text-xs text-teal-600">{{ currentData.windDirection }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 海象潮汐獨立一區 -->
+          <div class="bg-teal-50 rounded-xl p-3 flex items-center gap-3">
+             <i class="ph-fill ph-waves text-teal-600 text-2xl"></i>
+             <div>
+                <p class="text-[10px] text-teal-600 font-bold">海象觀測</p>
+                <p class="font-bold text-teal-800 text-sm">{{ currentData.tide }}</p>
+             </div>
+          </div>
+        </div>
+
+        <!-- 手動輸入區 -->
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4">
+          <h3 class="font-bold text-slate-700 flex items-center gap-2">
+            <i class="ph-fill ph-book-open-text text-blue-500 text-lg"></i> 戰績與筆記
+          </h3>
+          
+          <textarea 
+            v-model="notes"
+            placeholder="記錄一下今天的潮水狀況、用的釣組或螃蟹籠誘餌..."
+            class="w-full bg-slate-50 border-none rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-28 text-slate-700 placeholder:text-slate-400"
+          ></textarea>
+
+          <div>
+            <label class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-600 p-4 rounded-xl cursor-pointer transition-colors active:scale-95 border-2 border-dashed border-slate-300">
+              <i class="ph-fill ph-camera text-2xl"></i>
+              <span class="font-bold">拍攝或上傳照片</span>
+              <input type="file" accept="image/*" capture="environment" class="hidden" @change="handlePhotoUpload">
+            </label>
+            
+            <div v-if="photoBase64" class="mt-4 relative rounded-xl overflow-hidden shadow-sm">
+              <img :src="photoBase64" class="w-full h-48 object-cover">
+              <button @click="photoBase64 = ''" class="absolute top-2 right-2 bg-black/60 text-white p-2 rounded-full active:scale-95">
+                <i class="ph ph-x"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button 
+          @click="saveLog"
+          :disabled="saving"
+          class="w-full bg-teal-500 text-white font-black text-lg py-4 rounded-2xl shadow-lg shadow-teal-500/30 active:scale-95 transition-transform flex items-center justify-center gap-2 disabled:opacity-70 disabled:active:scale-100"
+        >
+          <i v-if="saving" class="ph ph-spinner animate-spin text-2xl"></i>
+          <i v-else class="ph-fill ph-floppy-disk text-2xl"></i>
+          {{ saving ? '儲存上傳中...' : '儲存這筆紀錄' }}
+        </button>
+      </div>
+
+      <!-- 歷史紀錄頁籤 -->
+      <div v-show="activeTab === 'history'" class="space-y-4 animate-fade-in">
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-3 sticky top-4 z-10">
+          <div class="relative">
+            <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+            <input v-model="searchTerm" type="text" placeholder="搜尋關鍵字或地點..." class="w-full bg-slate-50 border-none rounded-xl py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-400 text-slate-700">
+          </div>
+          <button @click="fetchLogs" class="w-full py-2 bg-blue-50 text-blue-600 font-bold rounded-xl active:scale-95 flex items-center justify-center gap-1 text-sm">
+            <i :class="['ph ph-arrows-clockwise text-lg', { 'animate-spin': loadingHistory }]"></i> 刷新雲端紀錄
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div v-if="loadingHistory" class="text-center py-10 text-slate-400 flex flex-col items-center">
+             <i class="ph ph-spinner animate-spin text-4xl mb-2"></i>
+             <p>載入你的輝煌戰績中...</p>
+          </div>
+          <div v-else-if="filteredLogs.length === 0" class="text-center text-slate-400 py-10">
+            <i class="ph-fill ph-fish text-5xl mx-auto mb-3 opacity-20"></i>
+            <p>目前還沒有符合的紀錄喔！</p>
+          </div>
+          
+          <div v-else v-for="(log, index) in filteredLogs" :key="index" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 relative">
+            <div v-if="log.photoUrl && !log.photoUrl.includes('失敗')" class="h-48 w-full overflow-hidden bg-slate-100">
+              <img :src="log.photoUrl" loading="lazy" class="w-full h-full object-cover">
+            </div>
+            <div class="p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-white bg-blue-500 px-2 py-1 rounded-lg">{{ log.dateString || '無日期' }}</span>
+                <span class="text-xs text-slate-400">{{ new Date(log.timestamp).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' }) }}</span>
+              </div>
+              <p v-if="log.address" class="font-bold text-slate-700 flex items-start gap-1 mb-3 text-sm">
+                <i class="ph-fill ph-map-pin text-orange-500 text-lg shrink-0 mt-0.5"></i> {{ log.address }}
+              </p>
+
+              <!-- 歷史紀錄標籤 -->
+              <div class="flex flex-wrap gap-2 mb-3">
+                <span v-if="log.temperature" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-thermometer text-blue-500"></i> {{ log.temperature }}°C</span>
+                <span v-if="log.pressure" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-gauge text-blue-500"></i> {{ log.pressure }} hPa</span>
+                <span v-if="log.windSpeed" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-wind text-teal-500"></i> {{ log.windDirection }} {{ log.windSpeed }} km/h</span>
+                <span v-if="log.tide" class="text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-md w-full mt-1"><i class="ph-fill ph-waves"></i> {{ log.tide }}</span>
+              </div>
+
+              <p v-if="log.notes" class="text-sm text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-100 whitespace-pre-wrap">{{ log.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <nav class="fixed bottom-0 w-full bg-white border-t border-slate-100 flex justify-around p-3 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] z-50 max-w-md left-1/2 -translate-x-1/2">
+      <button @click="activeTab = 'add'" :class="`flex flex-col items-center p-2 rounded-xl w-24 transition-colors ${activeTab === 'add' ? 'text-blue-600' : 'text-slate-400'}`">
+        <div :class="`p-1 rounded-full mb-1 ${activeTab === 'add' ? 'bg-blue-50' : ''}`"><i class="ph-fill ph-pencil-simple text-2xl"></i></div>
+        <span class="text-[10px] font-bold">新增紀錄</span>
+      </button>
+      <button @click="activeTab = 'history'; if(logs.length===0) fetchLogs();" :class="`flex flex-col items-center p-2 rounded-xl w-24 transition-colors ${activeTab === 'history' ? 'text-blue-600' : 'text-slate-400'}`">
+        <div :class="`p-1 rounded-full mb-1 ${activeTab === 'history' ? 'bg-blue-50' : ''}`"><i class="ph-fill ph-book-open-text text-2xl"></i></div>
+        <span class="text-[10px] font-bold">戰績日誌</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    const { createApp, ref, computed } = Vue;
+
+    // 🔥🔥🔥 【超重要設定】 🔥🔥🔥 貼上你剛剛重新部署獲得的 GAS 網址
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
+
+    // 將風向角度轉換為方位文字的輔助函數
+    const getWindDirection = (degree) => {
+      if (degree >= 337.5 || degree < 22.5) return '北風';
+      if (degree >= 22.5 && degree < 67.5) return '東北風';
+      if (degree >= 67.5 && degree < 112.5) return '東風';
+      if (degree >= 112.5 && degree < 157.5) return '東南風';
+      if (degree >= 157.5 && degree < 202.5) return '南風';
+      if (degree >= 202.5 && degree < 247.5) return '西南風';
+      if (degree >= 247.5 && degree < 292.5) return '西風';
+      if (degree >= 292.5 && degree < 337.5) return '西北風';
+      return '未知';
+    };
+
+    createApp({
+      setup() {
+        const activeTab = ref('add');
+        const loadingLocation = ref(false);
+        const saving = ref(false);
+        const currentData = ref(null);
+        const notes = ref('');
+        const photoBase64 = ref('');
+        const logs = ref([]);
+        const loadingHistory = ref(false);
+        const searchTerm = ref('');
+
+        const getLocationAndWeather = () => {
+          if (!navigator.geolocation) { alert('瀏覽器不支援定位！'); return; }
+
+          loadingLocation.value = true;
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+              try {
+                // 1. 抓取地址
+                const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=zh-tw`);
+                const geoData = await geoRes.json();
+                const address = geoData.locality || geoData.city || '未知沿海地區';
+
+                // 2. 抓取陸地氣象 (增加 surface_pressure 和 wind_direction_10m)
+                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&timezone=auto`;
+                const weatherRes = await fetch(weatherUrl);
+                const weatherData = await weatherRes.json();
+                
+                const wCurrent = weatherData.current;
+                
+                // 3. 抓取海象/潮汐資料
+                let waveInfo = "無附近海象觀測站資料";
+                try {
+                  const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=wave_height,wave_direction,wave_period&timezone=auto`;
+                  const marineRes = await fetch(marineUrl);
+                  const marineData = await marineRes.json();
+                  if (marineData.current && marineData.current.wave_height !== null) {
+                    waveInfo = `浪高 ${marineData.current.wave_height}m | 週期 ${marineData.current.wave_period}s`;
+                  }
+                } catch (e) { console.log("無海象資料"); }
+
+                currentData.value = {
+                  lat, lon,
+                  address: `${geoData.principalSubdivision || ''} ${address}`,
+                  temperature: wCurrent.temperature_2m,
+                  humidity: wCurrent.relative_humidity_2m,
+                  pressure: wCurrent.surface_pressure, // 氣壓
+                  windSpeed: wCurrent.wind_speed_10m,
+                  windDirDeg: wCurrent.wind_direction_10m, // 用於旋轉圖示
+                  windDirection: getWindDirection(wCurrent.wind_direction_10m), // 中文方位
+                  tide: waveInfo,
+                };
+              } catch (error) {
+                alert('抓取觀測資料失敗，請確認網路連線。');
+              } finally {
+                loadingLocation.value = false;
+              }
+            },
+            (error) => {
+              alert('無法取得定位，請確認已開啟手機 GPS 權限！');
+              loadingLocation.value = false;
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+          );
+        };
+
+        const handlePhotoUpload = (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+              const canvas = document.createElement('canvas');
+              const MAX_WIDTH = 800;
+              let scaleSize = 1;
+              if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
+              canvas.width = img.width * scaleSize;
+              canvas.height = img.height * scaleSize;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+              photoBase64.value = canvas.toDataURL('image/jpeg', 0.6);
+            };
+          };
+        };
+
+        const saveLog = async () => {
+          if (!currentData.value && !notes.value && !photoBase64.value) {
+            alert('請至少填寫筆記或進行定位喔！'); return;
+          }
+          if (GAS_URL === '請在這裡貼上你的_GAS_網址') {
+            alert('請先在程式碼中設定 GAS_URL！'); return;
+          }
+
+          saving.value = true;
+          const payload = {
+            dateString: new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' }),
+            notes: notes.value,
+            photoBase64: photoBase64.value,
+            ...(currentData.value || {})
+          };
+
+          try {
+            await fetch(GAS_URL, {
+              method: 'POST',
+              body: JSON.stringify(payload),
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            });
+
+            alert('紀錄成功發送至 Google 試算表！🎉');
+            currentData.value = null;
+            notes.value = '';
+            photoBase64.value = '';
+            await fetchLogs();
+            activeTab.value = 'history';
+          } catch (error) {
+            alert('儲存失敗，請檢查網路。');
+          } finally {
+            saving.value = false;
+          }
+        };
+
+        const fetchLogs = async () => {
+          if (GAS_URL === '請在這裡貼上你的_GAS_網址') return;
+          loadingHistory.value = true;
+          try {
+            const response = await fetch(GAS_URL);
+            const data = await response.json();
+            logs.value = data.reverse();
+          } catch (error) {
+            alert('讀取歷史紀錄失敗。');
+          } finally {
+            loadingHistory.value = false;
+          }
+        };
+
+        const filteredLogs = computed(() => {
+          return logs.value.filter(log => {
+            return searchTerm.value === '' || 
+              (log.notes && log.notes.toLowerCase().includes(searchTerm.value.toLowerCase())) ||
+              (log.address && log.address.toLowerCase().includes(searchTerm.value.toLowerCase()));
+          });
+        });
+
+        return {
+          activeTab, loadingLocation, saving, currentData, notes, photoBase64,
+          logs, loadingHistory, searchTerm, filteredLogs,
+          getLocationAndWeather, handlePhotoUpload, saveLog, fetchLogs
+        };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
