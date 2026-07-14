@@ -3,35 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>陳三歲釣魚與抓蟹日記</title>
+  <title>陳三歲的爆桶日誌</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     [v-cloak] { display: none; }
     body { -webkit-tap-highlight-color: transparent; }
-    .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
+    .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
     .fade-enter-from, .fade-leave-to { opacity: 0; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* 🎣 專屬拋竿 CSS 動畫 */
+    @keyframes cast-line {
+      0% { transform: rotate(-20deg) translateY(0); }
+      50% { transform: rotate(50deg) translateY(-15px) scale(1.1); }
+      100% { transform: rotate(-20deg) translateY(0); }
+    }
+    .animate-cast {
+      display: inline-block;
+      animation: cast-line 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+      transform-origin: bottom left; /* 以釣竿底部為軸心旋轉 */
+    }
+    
+    /* 圓形按鈕雷達波紋動畫 */
+    @keyframes ping-slow {
+      75%, 100% { transform: scale(1.4); opacity: 0; }
+    }
+    .animate-ping-slow {
+      animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans pb-20">
 
   <div id="app" v-cloak>
+    
+    <!-- 全螢幕拋竿儲存動畫 (毛玻璃覆蓋層) -->
+    <transition name="fade">
+      <div v-if="saving" class="fixed inset-0 z-[100] bg-slate-900/60 backdrop-blur-sm flex flex-col items-center justify-center">
+        <div class="bg-white p-8 rounded-[32px] shadow-2xl flex flex-col items-center max-w-[80vw] transform transition-all">
+          <div class="text-7xl mb-6 animate-cast">🎣</div>
+          <h3 class="text-blue-600 font-black text-xl mb-2 tracking-wide">大力拋竿中...</h3>
+          <p class="text-slate-500 text-sm font-bold bg-slate-100 px-4 py-1.5 rounded-full">紀錄大魚上鉤！🐟</p>
+        </div>
+      </div>
+    </transition>
+
     <header class="bg-gradient-to-r from-blue-700 to-blue-600 text-white p-5 rounded-b-3xl shadow-lg relative overflow-hidden z-10">
       <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
         <i class="ph-fill ph-fish text-[150px] transform rotate-12 translate-x-4 -translate-y-4"></i>
       </div>
       <h1 class="text-2xl font-black tracking-wider flex items-center gap-2">
-        <i class="ph-fill ph-waves text-cyan-300"></i>陳三歲釣魚與抓蟹日記
+        <i class="ph-fill ph-waves text-cyan-300"></i>陳三歲的爆桶日誌
       </h1>
       <p class="text-blue-100 text-sm mt-1 opacity-90">掌握流水差，野場爆桶不敗！</p>
     </header>
 
     <main class="p-4 max-w-md mx-auto min-h-[70vh]">
       
-      <div class="mb-4 bg-amber-50 border-l-4 border-amber-500 p-3.5 rounded-r-xl shadow-sm">
+      <div class="mb-6 bg-amber-50 border-l-4 border-amber-500 p-3.5 rounded-r-xl shadow-sm">
         <div class="flex gap-2">
           <i class="ph-fill ph-warning-octagon text-amber-600 text-xl shrink-0 mt-0.5"></i>
           <div>
@@ -44,20 +76,24 @@
       </div>
 
       <!-- ================= 新增紀錄 ================= -->
-      <div v-show="activeTab === 'add'" class="space-y-5 animate-fade-in">
+      <div v-show="activeTab === 'add'" class="space-y-6 animate-fade-in">
         
-        <button @click="getLocationAndWeather" :disabled="loadingLocation" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl p-5 shadow-xl shadow-orange-500/20 active:scale-95 transition-all flex flex-col items-center justify-center gap-2 relative overflow-hidden group">
-          <template v-if="loadingLocation">
-            <i class="ph ph-spinner animate-spin text-3xl"></i>
-            <span class="font-bold text-base">雷達測距中 & 載入最新潮汐...</span>
-          </template>
-          <template v-else>
-            <div class="bg-white/20 p-2.5 rounded-full">
-              <i class="ph-fill ph-navigation-arrow text-3xl"></i>
-            </div>
-            <span class="font-black text-lg tracking-widest">一鍵 GPS 智慧定位</span>
-          </template>
-        </button>
+        <!-- 升級版：圓形雷達 GPS 定位按鈕 -->
+        <div class="flex justify-center my-6">
+          <button @click="getLocationAndWeather" :disabled="loadingLocation" class="relative group flex flex-col items-center justify-center w-36 h-36 bg-gradient-to-br from-orange-400 to-amber-500 text-white rounded-full shadow-[0_10px_30px_rgba(245,158,11,0.3)] active:scale-95 transition-all disabled:opacity-80 disabled:scale-95 z-10">
+            <!-- 雷達波紋效果 -->
+            <div v-if="!loadingLocation" class="absolute inset-0 rounded-full border-4 border-orange-400/30 animate-ping-slow -z-10"></div>
+            
+            <template v-if="loadingLocation">
+              <i class="ph ph-spinner animate-spin text-4xl mb-1 drop-shadow-md"></i>
+              <span class="font-bold text-[11px] tracking-[0.2em] text-white/90">雷達鎖定中</span>
+            </template>
+            <template v-else>
+              <i class="ph-fill ph-navigation-arrow text-5xl mb-1 drop-shadow-md transform -rotate-45 group-hover:rotate-0 transition-transform duration-300"></i>
+              <span class="font-black text-xs tracking-widest drop-shadow-md">GPS 定位</span>
+            </template>
+          </button>
+        </div>
 
         <div v-if="currentData" class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4 relative">
           <div class="absolute top-0 right-0 bg-teal-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">雷達鎖定成功</div>
@@ -112,8 +148,8 @@
             </div>
           </div>
 
-          <div class="pt-3 border-t border-slate-100">
-            <div class="flex justify-between items-center mb-1">
+          <div class="pt-4 border-t border-slate-100">
+            <div class="flex justify-between items-center mb-2">
               <p class="text-xs text-blue-600 font-black flex items-center gap-1">
                 <i class="ph-fill ph-clock text-sm"></i> 今日潮汐 <span v-if="currentData.tideSource" class="text-slate-500">(來源: {{ currentData.tideSource }})</span>
               </p>
@@ -124,7 +160,12 @@
             
             <input type="text" v-model="manualTide" placeholder="無資料，可手動輸入" class="w-full bg-blue-50/50 border border-blue-100 rounded-xl py-3 px-3 focus:ring-2 focus:ring-blue-400 text-blue-900 font-black text-base transition-all">
             
-            <div class="flex gap-2 mt-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
+            <!-- 升級版：氣象署跳轉連結 -->
+            <a href="https://www.cwa.gov.tw/V8/C/M/tide.html?NSeaID=NSea06" target="_blank" class="flex items-center justify-center gap-1.5 w-full mt-2 bg-slate-50 hover:bg-slate-100 text-blue-500 text-xs font-bold py-2.5 rounded-xl border border-slate-200 active:scale-95 transition-all">
+              <i class="ph-bold ph-arrow-square-out text-sm"></i> 查不到？點此開啟氣象署看潮汐
+            </a>
+            
+            <div class="flex gap-2 mt-3 bg-slate-50 p-2 rounded-xl border border-slate-100">
               <div class="text-[10px] text-slate-500 font-black my-auto whitespace-nowrap leading-tight pl-1 border-r border-slate-200 pr-2">
                 流水差校正<br>微調器
               </div>
@@ -160,10 +201,10 @@
           </div>
         </div>
 
+        <!-- 儲存按鈕 (動畫已移至全螢幕) -->
         <button @click="saveLog" :disabled="saving" class="w-full bg-teal-500 text-white font-black text-lg py-4 rounded-2xl shadow-lg shadow-teal-500/30 active:scale-95 transition-transform flex items-center justify-center gap-2 disabled:opacity-70 disabled:active:scale-100">
-          <i v-if="saving" class="ph ph-spinner animate-spin text-2xl"></i>
-          <i v-else class="ph-fill ph-floppy-disk text-2xl"></i>
-          {{ saving ? '資料上傳中...' : '儲存這筆紀錄' }}
+          <i class="ph-fill ph-floppy-disk text-2xl"></i>
+          儲存這筆紀錄
         </button>
       </div>
 
@@ -310,10 +351,10 @@
   <script>
     const { createApp, ref, computed } = Vue;
 
-    // 🔥 確認你的 Google Apps Script 網址
+    // 🔥 這裡保留你原本的 GAS URL，不用動後端！
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
     
-    // 🔥 填入你剛申請到的 WeatherAPI Key
+    // 🔥 請填入你的 WeatherAPI 金鑰
     const WEATHER_API_KEY = '14b01c300c1645d195b125647261407'; 
 
     const getWindDirection = (degree) => {
@@ -400,7 +441,7 @@
                 const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=zh-tw`);
                 const geoData = await geoRes.json();
                 
-                // 2. 抓取基礎天氣與波浪 (沿用 Open-Meteo，因為它又快又免金鑰)
+                // 2. 抓取基礎天氣與波浪
                 const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&timezone=auto`;
                 const wRes = await fetch(weatherUrl);
                 const wData = await wRes.json();
@@ -429,7 +470,7 @@
                   tide: waveInfo
                 };
 
-                // 3. 【全新升級】使用 WeatherAPI 透過經緯度精準抓取潮汐
+                // 3. 潮汐定位
                 if (WEATHER_API_KEY === '你的WeatherAPI金鑰放這裡' || !WEATHER_API_KEY) {
                     manualTide.value = "請先在程式碼填入 WeatherAPI 金鑰";
                     loadingLocation.value = false;
@@ -437,7 +478,6 @@
                 }
 
                 try {
-                  // 呼叫 Marine 端點 (專門處理潮汐的)
                   const tideApiUrl = `https://api.weatherapi.com/v1/marine.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=1&tides=yes`;
                   const tideRes = await fetch(tideApiUrl);
                   
@@ -447,14 +487,11 @@
                   }
 
                   const tideData = await tideRes.json();
-                  
-                  // 解析出今天的潮汐陣列
                   const tidesArray = tideData.forecast?.forecastday?.[0]?.day?.tides?.[0]?.tide;
                   
                   if (tidesArray && tidesArray.length > 0) {
                       const tidesResult = tidesArray.map(t => {
                           const typeStr = t.tide_type === 'HIGH' ? '滿潮' : '乾潮';
-                          // t.tide_time 格式為 "2024-05-12 10:30"，切出時間部分
                           const timeStr = t.tide_time.split(' ')[1];
                           return `${typeStr} ${timeStr}`;
                       });
