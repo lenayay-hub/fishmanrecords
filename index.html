@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>陳三歲釣魚日記</title>
+  <title>陳三歲釣魚與抓蟹日記</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -19,44 +19,75 @@
 <body class="bg-slate-50 text-slate-800 font-sans pb-20">
 
   <div id="app" v-cloak>
-    <header class="bg-blue-600 text-white p-5 rounded-b-3xl shadow-lg relative overflow-hidden z-10">
+    <header class="bg-gradient-to-r from-blue-700 to-blue-600 text-white p-5 rounded-b-3xl shadow-lg relative overflow-hidden z-10">
       <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
         <i class="ph-fill ph-fish text-[150px] transform rotate-12 translate-x-4 -translate-y-4"></i>
       </div>
       <h1 class="text-2xl font-black tracking-wider flex items-center gap-2">
-        <i class="ph-fill ph-fish text-orange-400"></i>陳三歲釣魚日記
+        <i class="ph-fill ph-waves text-cyan-300"></i>陳三歲釣魚與抓蟹日記
       </h1>
-      <p class="text-blue-100 text-sm mt-1 opacity-90">記錄每一次的海邊探險！</p>
+      <p class="text-blue-100 text-sm mt-1 opacity-90">掌握流水差，野場爆桶不敗！</p>
     </header>
 
     <main class="p-4 max-w-md mx-auto min-h-[70vh]">
+      
+      <!-- ================= 安全警示看板 (抓蟹人必看) ================= -->
+      <div class="mb-4 bg-amber-50 border-l-4 border-amber-500 p-3.5 rounded-r-xl shadow-sm">
+        <div class="flex gap-2">
+          <i class="ph-fill ph-warning-octagon text-amber-600 text-xl shrink-0 mt-0.5"></i>
+          <div>
+            <h4 class="font-black text-amber-900 text-sm">抓蟹人安全備忘錄</h4>
+            <p class="text-[11px] text-amber-800 mt-1 leading-relaxed">
+              河口、內港的潮汐通常比大沿海 <strong class="text-red-600">晚 30~60 分鐘 (流水差)</strong>。請善用下方選單切換至精準漁港，或使用「微調按鈕」校正私房釣點時間！
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- ================= 新增紀錄頁籤 ================= -->
       <div v-show="activeTab === 'add'" class="space-y-5 animate-fade-in">
         
-        <button @click="getLocationAndWeather" :disabled="loadingLocation" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl p-6 shadow-xl shadow-orange-500/20 active:scale-95 transition-all flex flex-col items-center justify-center gap-3 relative overflow-hidden group">
+        <!-- 定位按鈕 -->
+        <button @click="getLocationAndWeather" :disabled="loadingLocation" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl p-5 shadow-xl shadow-orange-500/20 active:scale-95 transition-all flex flex-col items-center justify-center gap-2 relative overflow-hidden group">
           <template v-if="loadingLocation">
-            <i class="ph ph-spinner animate-spin text-4xl"></i>
-            <span class="font-bold text-lg">極速觀測天象與潮水中...</span>
+            <i class="ph ph-spinner animate-spin text-3xl"></i>
+            <span class="font-bold text-base">GPS 距離運算中 & 讀取潮汐...</span>
           </template>
           <template v-else>
-            <div class="bg-white/20 p-3 rounded-full">
-              <i class="ph-fill ph-navigation-arrow text-4xl"></i>
+            <div class="bg-white/20 p-2.5 rounded-full">
+              <i class="ph-fill ph-navigation-arrow text-3xl"></i>
             </div>
-            <span class="font-black text-xl tracking-widest">一鍵發送定位 & 氣象</span>
+            <span class="font-black text-lg tracking-widest">一鍵 GPS 定位 (自動找最近海岸)</span>
           </template>
         </button>
 
+        <!-- 手動選擇觀測沿海與港口 -->
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3">
+          <div class="flex justify-between items-center">
+            <label class="text-sm font-black text-slate-700 flex items-center gap-1.5">
+              <i class="ph-fill ph-map-trifold text-blue-500"></i> 當前觀測區域 (可手動切換)
+            </label>
+            <span v-if="loadingPorts" class="text-[10px] text-slate-400 animate-pulse">載入港口資料中...</span>
+          </div>
+          <select v-model="selectedRegion" @change="fetchTideOnly" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 font-bold">
+            <option v-for="r in regions" :key="r" :value="r" :disabled="r.startsWith('===')">{{ r }}</option>
+          </select>
+        </div>
+
+        <!-- 觀測結果看板 -->
         <div v-if="currentData" class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4 relative">
           <div class="absolute top-0 right-0 bg-teal-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">觀測成功</div>
           
           <div class="flex items-start gap-3 pt-2">
             <i class="ph-fill ph-map-pin text-orange-500 text-xl shrink-0 mt-1"></i>
             <div>
-              <p class="text-xs text-slate-400 font-bold mb-1">目前位置</p>
+              <p class="text-xs text-slate-400 font-bold mb-1">目前定位地址與坐標</p>
               <p class="font-bold text-slate-700 leading-tight">{{ currentData.address }}</p>
+              <p class="text-[10px] text-slate-400 mt-1">經緯度: {{ currentData.lat.toFixed(4) }}, {{ currentData.lon.toFixed(4) }}</p>
             </div>
           </div>
 
+          <!-- 氣象細節 -->
           <div class="grid grid-cols-2 gap-3 pt-3 border-t border-slate-50">
             <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
               <i class="ph-fill ph-thermometer text-blue-500 text-xl"></i>
@@ -76,9 +107,9 @@
               <i class="ph-fill ph-wind text-teal-500 text-xl" :style="{ transform: `rotate(${currentData.windDirDeg}deg)` }"></i>
               <div>
                 <p class="text-[10px] text-slate-500 font-bold">風速 / 風向</p>
-                <p class="font-black text-slate-700 text-sm">
-                  {{ currentData.windSpeed }} <span class="text-xs font-normal">km/h</span><br>
-                  <span class="text-xs text-teal-600">{{ currentData.windDirection }}</span>
+                <p class="font-black text-slate-700 text-xs">
+                  {{ currentData.windSpeed }} <span class="text-[10px] font-normal">km/h</span><br>
+                  <span class="text-teal-600 font-bold">{{ currentData.windDirection }}</span>
                 </p>
               </div>
             </div>
@@ -98,19 +129,45 @@
             </div>
           </div>
 
-          <div class="pt-3 border-t border-slate-50">
-            <p class="text-[10px] text-blue-500 font-bold mb-1 flex items-center gap-1">
-              <i class="ph-fill ph-clock text-sm"></i> 今日潮水 (滿潮/乾潮)
-            </p>
-            <input type="text" v-model="manualTide" placeholder="自動抓取中... (也可手動輸入)" class="w-full bg-blue-50/50 border-none rounded-xl py-2 px-3 focus:ring-2 focus:ring-blue-400 text-blue-800 font-bold text-sm">
+          <!-- 潮汐核心顯示區域與微調器 -->
+          <div class="pt-3 border-t border-slate-100">
+            <div class="flex justify-between items-center mb-1">
+              <p class="text-xs text-blue-600 font-black flex items-center gap-1">
+                <i class="ph-fill ph-clock text-sm"></i> 今日潮汐預報 ({{ selectedRegion }})
+              </p>
+              <span v-if="tideStatus === 'loading'" class="text-[10px] text-blue-500 animate-pulse">精準匹配中...</span>
+              <span v-else-if="tideStatus === 'success'" class="text-[10px] text-emerald-600 font-bold">● 連線成功</span>
+              <span v-else class="text-[10px] text-red-500 font-bold">⚠️ 連線失敗 (請手動輸入)</span>
+            </div>
+            
+            <input type="text" v-model="manualTide" placeholder="無資料，可手動輸入" class="w-full bg-blue-50/50 border border-blue-100 rounded-xl py-3 px-3 focus:ring-2 focus:ring-blue-400 text-blue-900 font-black text-base transition-all">
+            
+            <!-- 流水差微調器 (私房釣點必備) -->
+            <div class="flex gap-2 mt-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
+              <div class="text-[10px] text-slate-500 font-black my-auto whitespace-nowrap leading-tight pl-1 border-r border-slate-200 pr-2">
+                內港/河口<br>流水差校正
+              </div>
+              <div class="flex flex-1 gap-1">
+                <button @click="adjustTideTime(-10)" class="flex-1 bg-white border border-slate-200 text-slate-600 shadow-sm rounded-lg py-1.5 text-xs font-bold transition-all active:scale-95 active:bg-slate-100">-10分</button>
+                <button @click="adjustTideTime(10)" class="flex-1 bg-white border border-slate-200 text-slate-600 shadow-sm rounded-lg py-1.5 text-xs font-bold transition-all active:scale-95 active:bg-slate-100">+10分</button>
+                <button @click="adjustTideTime(30)" class="flex-1 bg-white border border-slate-200 text-slate-600 shadow-sm rounded-lg py-1.5 text-xs font-bold transition-all active:scale-95 active:bg-slate-100">+30分</button>
+              </div>
+            </div>
+            
+            <div class="mt-3">
+              <a href="https://www.cwa.gov.tw/V8/C/M/tide.html" target="_blank" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl py-2 px-3 text-[11px] font-bold flex items-center justify-center gap-1 transition-colors">
+                <i class="ph-fill ph-arrow-square-out text-sm"></i> 前往氣象署官方「逐小時詳細潮汐圖」複查
+              </a>
+            </div>
           </div>
         </div>
 
+        <!-- 筆記與戰績 -->
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4">
           <h3 class="font-bold text-slate-700 flex items-center gap-2">
             <i class="ph-fill ph-book-open-text text-blue-500 text-lg"></i> 戰績與筆記
           </h3>
-          <textarea v-model="notes" placeholder="今天釣況如何？用了什麼秘密武器？" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-28 text-slate-700 placeholder:text-slate-400"></textarea>
+          <textarea v-model="notes" placeholder="今天在哪個野場？抓到幾隻螃蟹？用了什麼秘密武器？" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-28 text-slate-700 placeholder:text-slate-400"></textarea>
 
           <div>
             <label class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-600 p-4 rounded-xl cursor-pointer transition-colors active:scale-95 border-2 border-dashed border-slate-300">
@@ -157,7 +214,6 @@
           </div>
           
           <div v-else v-for="(log, index) in filteredLogs" :key="index" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 relative">
-            
             <div class="absolute top-3 right-3 z-10 flex gap-2">
               <button @click="openEditModal(log)" class="bg-white/80 backdrop-blur text-blue-600 p-2 rounded-full shadow-sm active:scale-95">
                 <i class="ph-fill ph-pencil-simple"></i>
@@ -167,7 +223,6 @@
               </button>
             </div>
 
-            <!-- 多圖顯示 -->
             <div v-if="log.photoUrls && log.photoUrls.length > 0" class="bg-slate-100 flex overflow-x-auto hide-scrollbar snap-x">
               <template v-for="(url, imgIdx) in log.photoUrls" :key="imgIdx">
                 <div v-if="url && url.includes('http')" @click="lightboxImage = url" class="w-full shrink-0 h-56 snap-center relative cursor-pointer group">
@@ -199,18 +254,11 @@
                 <a :href="`https://www.google.com/maps/dir/?api=1&destination=${log.lat},${log.lon}`" target="_blank" class="flex-1 bg-blue-50 text-blue-600 py-2 rounded-xl text-center text-xs font-bold flex justify-center items-center gap-1 active:scale-95 transition-transform">
                   <i class="ph-fill ph-google-logo text-sm"></i> Google 導航
                 </a>
-                <a :href="`http://maps.apple.com/?daddr=${log.lat},${log.lon}&dirflg=d`" target="_blank" class="flex-1 bg-slate-100 text-slate-700 py-2 rounded-xl text-center text-xs font-bold flex justify-center items-center gap-1 active:scale-95 transition-transform">
-                  <i class="ph-fill ph-apple-logo text-sm"></i> Apple 導航
-                </a>
               </div>
 
               <div class="flex flex-wrap gap-2 mb-3">
-                <span v-if="log.temperature" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-thermometer text-blue-500"></i> {{ log.temperature }}°C</span>
-                <span v-if="log.humidity" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-drop text-blue-500"></i> {{ log.humidity }}%</span>
-                <span v-if="log.pressure" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-gauge text-blue-500"></i> {{ log.pressure }} hPa</span>
                 <span v-if="log.windSpeed" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-wind text-teal-500"></i> {{ log.windDirection }} {{ log.windSpeed }} km/h</span>
-                
-                <span v-if="log.tide" class="text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-md w-full mt-1"><i class="ph-fill ph-waves"></i> 海象/浪高: {{ log.tide }}</span>
+                <span v-if="log.tide" class="text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-md w-full mt-1"><i class="ph-fill ph-waves"></i> 海象: {{ log.tide }}</span>
                 <span v-if="log.manualTide" class="text-[11px] bg-blue-100 text-blue-800 px-2 py-1.5 rounded-md w-full font-bold shadow-sm"><i class="ph-fill ph-clock"></i> 潮水: {{ log.manualTide }}</span>
               </div>
 
@@ -279,7 +327,7 @@
   <script>
     const { createApp, ref, computed } = Vue;
 
-    // 🔥🔥🔥 這裡不用動，我幫你保留了你的 GAS 網址 🔥🔥🔥
+    // 🔥🔥🔥 請在這裡貼上你的 GAS 網址 🔥🔥🔥
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
 
     const getWindDirection = (degree) => {
@@ -313,31 +361,157 @@
         const editingLog = ref(null);
         const editData = ref({ notes: '', manualTide: '', photosBase64: [] });
 
+        // GPS 自動鎖定用的 19 個沿海中心點
+        const gpsCoastals = [
+          { name: "基隆市沿海", lat: 25.15, lon: 121.78 }, { name: "新北市沿海", lat: 25.18, lon: 121.50 },
+          { name: "桃園市沿海", lat: 25.05, lon: 121.15 }, { name: "新竹市沿海", lat: 24.83, lon: 120.93 },
+          { name: "新竹縣沿海", lat: 24.87, lon: 120.92 }, { name: "苗栗縣沿海", lat: 24.56, lon: 120.73 },
+          { name: "臺中市沿海", lat: 24.25, lon: 120.50 }, { name: "彰化縣沿海", lat: 24.05, lon: 120.35 },
+          { name: "雲林縣沿海", lat: 23.70, lon: 120.15 }, { name: "嘉義縣沿海", lat: 23.45, lon: 120.10 },
+          { name: "臺南市沿海", lat: 23.00, lon: 120.08 }, { name: "高雄市沿海", lat: 22.62, lon: 120.25 },
+          { name: "屏東縣沿海", lat: 22.20, lon: 120.65 }, { name: "宜蘭縣沿海", lat: 24.75, lon: 121.85 },
+          { name: "花蓮縣沿海", lat: 23.95, lon: 121.62 }, { name: "臺東縣沿海", lat: 22.75, lon: 121.15 },
+          { name: "澎湖縣沿海", lat: 23.57, lon: 119.58 }, { name: "金門縣沿海", lat: 24.44, lon: 118.37 },
+          { name: "連江縣沿海", lat: 26.16, lon: 119.95 }
+        ];
+
+        // 初始只有大範圍沿海，後續會非同步載入全台幾十個港口
+        const regions = ref([
+          "=== 沿海大範圍 ===",
+          ...gpsCoastals.map(c => c.name)
+        ]);
+        
+        const selectedRegion = ref("高雄市沿海");
+        const tideStatus = ref("idle");
+        const loadingPorts = ref(false);
+
         const formatDate = (dateStr, timestamp) => {
-           if (!dateStr || dateStr === 'undefined' || dateStr.trim() === '') {
-               return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW');
-           }
-           if (dateStr.includes('T') || dateStr.includes('Z')) {
-               return new Date(dateStr).toLocaleDateString('zh-TW');
-           }
+           if (!dateStr || dateStr === 'undefined' || dateStr.trim() === '') return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW');
+           if (dateStr.includes('T') || dateStr.includes('Z')) return new Date(dateStr).toLocaleDateString('zh-TW');
            return dateStr;
+        };
+
+        const getSafeTaiwanDate = () => {
+          const d = new Date();
+          const taipeiTime = d.getTime() + (d.getTimezoneOffset() * 60000) + (8 * 3600000); 
+          const taipeiDateObj = new Date(taipeiTime);
+          const yy = taipeiDateObj.getFullYear();
+          const mm = String(taipeiDateObj.getMonth() + 1).padStart(2, '0');
+          const dd = String(taipeiDateObj.getDate()).padStart(2, '0');
+          return `${yy}-${mm}-${dd}`;
+        };
+
+        const findNearestRegion = (lat, lon) => {
+          let minDistance = Infinity;
+          let nearestName = "高雄市沿海";
+          gpsCoastals.forEach(r => {
+            const dist = Math.sqrt(Math.pow(lat - r.lat, 2) + Math.pow(lon - r.lon, 2));
+            if (dist < minDistance) { minDistance = dist; nearestName = r.name; }
+          });
+          return nearestName;
+        };
+
+        // 背景載入全台港口資料表 F-A0021-003
+        const fetchAllPorts = async () => {
+          loadingPorts.value = true;
+          try {
+            const safeDate = getSafeTaiwanDate();
+            const timeFrom = encodeURIComponent(`${safeDate}T00:00:00`);
+            const timeTo = encodeURIComponent(`${safeDate}T23:59:59`);
+            const url = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-003?Authorization=CWA-293FA4CC-1663-419B-815A-CABE49E363F0&timeFrom=${timeFrom}&timeTo=${timeTo}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data && data.success) {
+              const portNames = data.records.location.map(l => l.locationName);
+              regions.value.push("=== 全台精準漁港 / 商港 ===");
+              regions.value.push(...portNames);
+            }
+          } catch(e) {}
+          finally { loadingPorts.value = false; }
+        };
+
+        const fetchTideOnly = async () => {
+          tideStatus.value = "loading";
+          manualTide.value = "正在取得最新潮汐預報...";
+          try {
+            const safeDate = getSafeTaiwanDate();
+            const timeFrom = encodeURIComponent(`${safeDate}T00:00:00`);
+            const timeTo = encodeURIComponent(`${safeDate}T23:59:59`);
+            
+            // 智慧判斷：如果名稱包含「沿海」就去查 001，否則(如高雄港)就查 003 港口資料庫
+            const datasetID = selectedRegion.value.includes('沿海') ? 'F-A0021-001' : 'F-A0021-003';
+            const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/${datasetID}?Authorization=CWA-293FA4CC-1663-419B-815A-CABE49E363F0&timeFrom=${timeFrom}&timeTo=${timeTo}`;
+            
+            const cwaRes = await fetch(cwaUrl);
+            if (!cwaRes.ok) throw new Error("CWA HTTP error");
+            const cwaData = await cwaRes.json();
+            
+            if (cwaData && cwaData.success) {
+              const locations = cwaData.records?.location || [];
+              const loc = locations.find(l => l.locationName === selectedRegion.value);
+              
+              if (loc && loc.validTime) {
+                const todayData = loc.validTime.find(v => v.startTime.includes(safeDate));
+                if (todayData && todayData.weatherElement) {
+                  const tides = [];
+                  todayData.weatherElement.forEach(we => {
+                    if (we.time) {
+                      we.time.forEach(t => {
+                        let type = "";
+                        if (t.parameter) t.parameter.forEach(p => { if (p.parameterValue === '滿潮' || p.parameterValue === '乾潮') type = p.parameterValue; });
+                        if (type && t.dataTime) tides.push(`${type} ${t.dataTime.split(' ')[1].substring(0, 5)}`);
+                      });
+                    }
+                  });
+                  const uniqueTides = [...new Set(tides)];
+                  manualTide.value = uniqueTides.length > 0 ? uniqueTides.join(' / ') : "今日無潮汐資料，可手動輸入";
+                  tideStatus.value = "success";
+                } else {
+                  manualTide.value = "氣象署暫無今日預報，可手動輸入"; tideStatus.value = "error";
+                }
+              } else {
+                manualTide.value = "找不到該地區資料，可手動輸入"; tideStatus.value = "error";
+              }
+            }
+          } catch (e) {
+            manualTide.value = "連線失敗，請手動確認"; tideStatus.value = "error";
+          }
+        };
+
+        // 超級獨家功能：潮汐微調器 (流水差校正)
+        const adjustTideTime = (offsetMinutes) => {
+          if (!manualTide.value || manualTide.value.includes("失敗") || manualTide.value.includes("無資料")) return;
+          
+          // 利用 Regex 抓出字串裡所有的時間 HH:MM 進行數學加減
+          manualTide.value = manualTide.value.replace(/(\d{1,2}):(\d{2})/g, (match, h, m) => {
+            let totalMins = parseInt(h) * 60 + parseInt(m) + offsetMinutes;
+            if (totalMins >= 24 * 60) totalMins -= 24 * 60; // 跨夜處理
+            if (totalMins < 0) totalMins += 24 * 60; // 跨日前一天處理
+            const newH = String(Math.floor(totalMins / 60)).padStart(2, '0');
+            const newM = String(totalMins % 60).padStart(2, '0');
+            return `${newH}:${newM}`;
+          });
+          
+          // 加個特效提示使用者已修改
+          const temp = manualTide.value;
+          manualTide.value = "🕒 校正中...";
+          setTimeout(() => { manualTide.value = temp + ` (已校正流水差)`; }, 150);
         };
 
         const getLocationAndWeather = () => {
           loadingLocation.value = true;
-          manualTide.value = "氣象署連線中..."; 
+          manualTide.value = "正在定位與比對最近海岸..."; 
           
-          if (!navigator.geolocation) { 
-              alert('瀏覽器不支援定位！'); 
-              loadingLocation.value = false;
-              return; 
-          }
+          if (!navigator.geolocation) { alert('瀏覽器不支援定位！'); loadingLocation.value = false; return; }
           
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const lat = position.coords.latitude;
               const lon = position.coords.longitude;
               try {
+                const nearestCoast = findNearestRegion(lat, lon);
+                selectedRegion.value = nearestCoast;
+
                 const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=zh-tw`);
                 const geoData = await geoRes.json();
                 
@@ -355,7 +529,7 @@
                     waveInfo = `${marineData.current.wave_height}m | ${marineData.current.wave_period}s`;
                   }
                 } catch(e) {}
-                
+
                 currentData.value = {
                   lat, lon,
                   address: geoData.locality || geoData.city || '未知沿海地區',
@@ -368,80 +542,13 @@
                   tide: waveInfo
                 };
 
-                // ====== 終極修復：不傳縣市，直接過濾，保證不當機 ======
-                try {
-                  let cityName = geoData.principalSubdivision || geoData.city || "高雄";
-                  if(cityName.includes("Kaohsiung")) cityName = "高雄";
-                  else if(cityName.includes("Taipei")) cityName = "臺北";
-                  else if(cityName.includes("New Taipei")) cityName = "新北";
-                  else if(cityName.includes("Pingtung")) cityName = "屏東";
-                  else if(cityName.includes("Tainan")) cityName = "臺南";
-                  else if(cityName.includes("Taichung")) cityName = "臺中";
-                  else if(cityName.includes("Keelung")) cityName = "基隆";
-                  else if(cityName.includes("Yilan")) cityName = "宜蘭";
-                  else if(cityName.includes("Hualien")) cityName = "花蓮";
-                  else if(cityName.includes("Taitung")) cityName = "臺東";
-                  else if(cityName.includes("Taoyuan")) cityName = "桃園";
-                  else if(cityName.includes("Hsinchu")) cityName = "新竹";
-                  else if(cityName.includes("Miaoli")) cityName = "苗栗";
-                  else if(cityName.includes("Changhua")) cityName = "彰化";
-                  else if(cityName.includes("Yunlin")) cityName = "雲林";
-                  else if(cityName.includes("Chiayi")) cityName = "嘉義";
-                  else if(cityName.includes("Penghu")) cityName = "澎湖";
-
-                  const taipeiDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' });
-                  const cityPrefix = cityName.substring(0, 2);
-                  
-                  // 去掉 locationName 參數，只用日期縮小檔案大小！
-                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=CWA-293FA4CC-1663-419B-815A-CABE49E363F0&timeFrom=${taipeiDate}T00:00:00&timeTo=${taipeiDate}T23:59:59`;
-                  
-                  const cwaRes = await fetch(cwaUrl);
-                  const cwaData = await cwaRes.json();
-                  
-                  if (cwaData && cwaData.success) {
-                     // 在 JavaScript 裡自己找測站，這樣就算找不到也不會當機！
-                     const loc = cwaData.records.location.find(l => l.locationName.includes(cityPrefix));
-                     
-                     if (loc && loc.validTime) {
-                        const todayData = loc.validTime.find(v => v.startTime.includes(taipeiDate));
-                        if(todayData) {
-                           const tides = [];
-                           todayData.weatherElement.forEach(we => {
-                              if(we.time) {
-                                 we.time.forEach(t => {
-                                    let type = "";
-                                    if(t.parameter) t.parameter.forEach(p => { 
-                                       if(p.parameterValue === '滿潮' || p.parameterValue === '乾潮') type = p.parameterValue; 
-                                    });
-                                    if(type && t.dataTime) {
-                                       const timeStr = t.dataTime.split(' ')[1].substring(0, 5); 
-                                       tides.push(`${type} ${timeStr}`);
-                                    }
-                                 });
-                              }
-                           });
-                           manualTide.value = tides.length > 0 ? tides.join(' / ') : "今日無資料，可手動輸入";
-                        } else {
-                           manualTide.value = "找不到今日資料，可手動輸入";
-                        }
-                     } else {
-                        manualTide.value = `查無${cityPrefix}潮汐站，可手動輸入`;
-                     }
-                  } else {
-                     manualTide.value = "氣象署連線異常，可手動輸入";
-                  }
-                } catch (c) { 
-                  console.log(c);
-                  manualTide.value = "連線失敗，可手動輸入"; 
-                }
-
+                await fetchTideOnly();
               } catch (error) { 
-                  console.error(error);
-                  alert('抓取資料發生錯誤。'); 
+                  alert('抓取氣象資料發生錯誤。'); 
               } 
               finally { loadingLocation.value = false; }
             },
-            () => { alert('無法取得定位！請檢查手機設定。'); loadingLocation.value = false; },
+            (err) => { alert('無法取得定位！請確認您已開啟手機 GPS 並允許網頁定位權限。'); loadingLocation.value = false; },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
           );
         };
@@ -479,9 +586,7 @@
           const payload = {
             action: 'add',
             dateString: new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' }),
-            notes: notes.value,
-            manualTide: manualTide.value, 
-            photosBase64: photosBase64.value, 
+            notes: notes.value, manualTide: manualTide.value, photosBase64: photosBase64.value, 
             ...(currentData.value || {})
           };
 
@@ -502,14 +607,10 @@
 
         const updateLog = async () => {
           saving.value = true;
-          const payload = {
-            action: 'update', timestamp: editingLog.value.timestamp,
-            notes: editData.value.notes, manualTide: editData.value.manualTide, photosBase64: editData.value.photosBase64
-          };
+          const payload = { action: 'update', timestamp: editingLog.value.timestamp, notes: editData.value.notes, manualTide: editData.value.manualTide, photosBase64: editData.value.photosBase64 };
           try {
             await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
-            editingLog.value = null;
-            await fetchLogs();
+            editingLog.value = null; await fetchLogs();
           } catch(e) { alert('更新失敗'); }
           finally { saving.value = false; }
         };
@@ -528,29 +629,24 @@
           try {
             const response = await fetch(GAS_URL);
             const data = await response.json();
-            
-            logs.value = data.sort((a, b) => {
-              const timeA = new Date(parseInt(a.timestamp)).getTime();
-              const timeB = new Date(parseInt(b.timestamp)).getTime();
-              return timeB - timeA;
-            });
+            logs.value = data.sort((a, b) => new Date(parseInt(b.timestamp)).getTime() - new Date(parseInt(a.timestamp)).getTime());
           } catch (error) {} 
           finally { loadingHistory.value = false; }
         };
 
         const filteredLogs = computed(() => {
-          return logs.value.filter(log => {
-            return searchTerm.value === '' || 
-              (log.notes && log.notes.toLowerCase().includes(searchTerm.value.toLowerCase())) ||
-              (log.address && log.address.toLowerCase().includes(searchTerm.value.toLowerCase()));
-          });
+          return logs.value.filter(log => searchTerm.value === '' || (log.notes && log.notes.toLowerCase().includes(searchTerm.value.toLowerCase())) || (log.address && log.address.toLowerCase().includes(searchTerm.value.toLowerCase())));
         });
+
+        // 系統初始化啟動程序
+        fetchTideOnly(); // 預設抓取高雄沿海
+        fetchAllPorts(); // 背景靜默載入全台港口庫
 
         return {
           activeTab, loadingLocation, saving, currentData, notes, manualTide, photosBase64,
           logs, loadingHistory, searchTerm, filteredLogs, lightboxImage,
-          editingLog, editData,
-          getLocationAndWeather, handlePhotoUpload, saveLog, fetchLogs, openEditModal, updateLog, deleteLog, formatDate
+          editingLog, editData, regions, selectedRegion, tideStatus, loadingPorts,
+          getLocationAndWeather, handlePhotoUpload, saveLog, fetchLogs, openEditModal, updateLog, deleteLog, formatDate, fetchTideOnly, adjustTideTime
         };
       }
     }).mount('#app');
