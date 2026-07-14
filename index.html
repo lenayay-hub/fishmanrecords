@@ -171,12 +171,14 @@
 
             <!-- 多圖顯示區塊 -->
             <div v-if="log.photoUrls && log.photoUrls.length > 0" class="bg-slate-100 flex overflow-x-auto hide-scrollbar snap-x">
-              <div v-for="url in log.photoUrls" v-if="url.includes('http')" @click="lightboxImage = url" class="w-full shrink-0 h-56 snap-center relative cursor-pointer group">
-                <img :src="url" loading="lazy" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <i class="ph ph-magnifying-glass-plus text-white text-3xl"></i>
+              <template v-for="(url, imgIdx) in log.photoUrls" :key="imgIdx">
+                <div v-if="url && url.includes('http')" @click="lightboxImage = url" class="w-full shrink-0 h-56 snap-center relative cursor-pointer group">
+                  <img :src="url" loading="lazy" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="ph ph-magnifying-glass-plus text-white text-3xl"></i>
+                  </div>
                 </div>
-              </div>
+              </template>
             </div>
             
             <div class="p-4 pt-5">
@@ -279,7 +281,7 @@
     const { createApp, ref, computed } = Vue;
 
     // 🔥🔥🔥 貼上你剛剛「建立新版本」獲得的 GAS 網址 🔥🔥🔥
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
+    const GAS_URL = '請在這裡貼上你的_GAS_網址'; 
 
     const getWindDirection = (degree) => {
       if (degree >= 337.5 || degree < 22.5) return '北風';
