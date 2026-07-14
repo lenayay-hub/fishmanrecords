@@ -115,7 +115,7 @@
           <div class="pt-3 border-t border-slate-100">
             <div class="flex justify-between items-center mb-1">
               <p class="text-xs text-blue-600 font-black flex items-center gap-1">
-                <i class="ph-fill ph-clock text-sm"></i> 今日潮汐 <span v-if="currentData.nearestStation" class="text-slate-500">(測站: {{ currentData.nearestStation }})</span>
+                <i class="ph-fill ph-clock text-sm"></i> 今日潮汐 <span v-if="currentData.tideSource" class="text-slate-500">(來源: {{ currentData.tideSource }})</span>
               </p>
               <span v-if="manualTide.includes('連線') || manualTide.includes('正在')" class="text-[10px] text-blue-500 animate-pulse">精準匹配中...</span>
               <span v-else-if="manualTide.includes('滿潮') || manualTide.includes('乾潮')" class="text-[10px] text-emerald-600 font-bold">● 連線成功</span>
@@ -310,8 +310,11 @@
   <script>
     const { createApp, ref, computed } = Vue;
 
+    // 🔥 確認你的 Google Apps Script 網址
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
-    const CWA_API_KEY = 'CWA-293FA4CC-1663-419B-815A-CABE49E363F0';
+    
+    // 🔥 填入你剛申請到的 WeatherAPI Key
+    const WEATHER_API_KEY = '14b01c300c1645d195b125647261407'; 
 
     const getWindDirection = (degree) => {
       if (degree >= 337.5 || degree < 22.5) return '北風';
@@ -323,14 +326,6 @@
       if (degree >= 247.5 && degree < 292.5) return '西風';
       if (degree >= 292.5 && degree < 337.5) return '西北風';
       return '未知';
-    };
-
-    const getDistance = (lat1, lon1, lat2, lon2) => {
-        const R = 6371; 
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); 
     };
 
     createApp({
@@ -374,7 +369,7 @@
         };
 
         const adjustTideTime = (offsetMinutes) => {
-          if (!manualTide.value || manualTide.value.includes("失敗") || manualTide.value.includes("無資料")) return;
+          if (!manualTide.value || manualTide.value.includes("失敗") || manualTide.value.includes("無資料") || manualTide.value.includes("請設定")) return;
           
           manualTide.value = manualTide.value.replace(/(\d{1,2}):(\d{2})/g, (match, h, m) => {
             let totalMins = parseInt(h) * 60 + parseInt(m) + offsetMinutes;
@@ -392,7 +387,7 @@
 
         const getLocationAndWeather = () => {
           loadingLocation.value = true;
-          manualTide.value = "連線氣象署中..."; 
+          manualTide.value = "連線全球潮汐庫中..."; 
           
           if (!navigator.geolocation) { alert('瀏覽器不支援定位！'); loadingLocation.value = false; return; }
           
@@ -401,9 +396,11 @@
               const lat = position.coords.latitude;
               const lon = position.coords.longitude;
               try {
+                // 1. 抓取中文地址
                 const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=zh-tw`);
                 const geoData = await geoRes.json();
                 
+                // 2. 抓取基礎天氣與波浪 (沿用 Open-Meteo，因為它又快又免金鑰)
                 const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&timezone=auto`;
                 const wRes = await fetch(weatherUrl);
                 const wData = await wRes.json();
@@ -422,7 +419,7 @@
                 currentData.value = {
                   lat, lon,
                   address: geoData.locality || geoData.city || '未知沿海地區',
-                  nearestStation: null, 
+                  tideSource: 'GPS智慧定位', 
                   temperature: wCurrent.temperature_2m,
                   humidity: wCurrent.relative_humidity_2m,
                   pressure: wCurrent.surface_pressure,
@@ -432,80 +429,44 @@
                   tide: waveInfo
                 };
 
-                const d = new Date();
-                const taipeiTime = d.getTime() + (d.getTimezoneOffset() * 60000) + (8 * 3600000); 
-                const tObj = new Date(taipeiTime);
-                const safeDate = `${tObj.getFullYear()}-${String(tObj.getMonth()+1).padStart(2,'0')}-${String(tObj.getDate()).padStart(2,'0')}`;
+                // 3. 【全新升級】使用 WeatherAPI 透過經緯度精準抓取潮汐
+                if (WEATHER_API_KEY === '你的WeatherAPI金鑰放這裡' || !WEATHER_API_KEY) {
+                    manualTide.value = "請先在程式碼填入 WeatherAPI 金鑰";
+                    loadingLocation.value = false;
+                    return;
+                }
 
                 try {
-                  // 【修復1】為帶有冒號的時間參數加上 URL 編碼，防止防火牆阻擋 (HTTP 400)
-                  const timeFrom = encodeURIComponent(`${safeDate}T00:00:00`);
-                  const timeTo = encodeURIComponent(`${safeDate}T23:59:59`);
-                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=${CWA_API_KEY}&timeFrom=${timeFrom}&timeTo=${timeTo}`;
+                  // 呼叫 Marine 端點 (專門處理潮汐的)
+                  const tideApiUrl = `https://api.weatherapi.com/v1/marine.json?key=${WEATHER_API_KEY}&q=${lat},${lon}&days=1&tides=yes`;
+                  const tideRes = await fetch(tideApiUrl);
                   
-                  const cwaRes = await fetch(cwaUrl);
-                  // 【修復2】攔截 HTTP 層級錯誤，避免後面解析 HTML 時產生 SyntaxError
-                  if (!cwaRes.ok) throw new Error(`HTTP Error: ${cwaRes.status}`);
+                  if (!tideRes.ok) {
+                      if(tideRes.status === 401 || tideRes.status === 403) throw new Error('API Key 無效或被封鎖');
+                      throw new Error(`HTTP Error: ${tideRes.status}`);
+                  }
+
+                  const tideData = await tideRes.json();
                   
-                  const cwaData = await cwaRes.json();
+                  // 解析出今天的潮汐陣列
+                  const tidesArray = tideData.forecast?.forecastday?.[0]?.day?.tides?.[0]?.tide;
                   
-                  if (cwaData && (cwaData.success === "true" || cwaData.success === true) && cwaData.records && cwaData.records.location) {
-                      let nearestLoc = null;
-                      let minDistance = Infinity;
-                      
-                      cwaData.records.location.forEach(loc => {
-                          const statLat = parseFloat(loc.latitude);
-                          const statLon = parseFloat(loc.longitude);
-                          if (!isNaN(statLat) && !isNaN(statLon)) {
-                              const dist = getDistance(lat, lon, statLat, statLon);
-                              if (dist < minDistance) { minDistance = dist; nearestLoc = loc; }
-                          }
+                  if (tidesArray && tidesArray.length > 0) {
+                      const tidesResult = tidesArray.map(t => {
+                          const typeStr = t.tide_type === 'HIGH' ? '滿潮' : '乾潮';
+                          // t.tide_time 格式為 "2024-05-12 10:30"，切出時間部分
+                          const timeStr = t.tide_time.split(' ')[1];
+                          return `${typeStr} ${timeStr}`;
                       });
                       
-                      if (!nearestLoc) {
-                         const countyName = (geoData.principalSubdivision || geoData.city || "高雄").substring(0, 2);
-                         nearestLoc = cwaData.records.location.find(l => l.locationName.includes(countyName));
-                      }
-                      
-                      if (nearestLoc) {
-                          currentData.value.nearestStation = nearestLoc.locationName;
-                          // 【修復3】增加安全檢查，避免 validTime 不存在時崩潰
-                          const todayData = nearestLoc.validTime && nearestLoc.validTime.find(v => v.startTime.includes(safeDate));
-                          
-                          if (todayData && todayData.weatherElement) {
-                              const tides = [];
-                              todayData.weatherElement.forEach(we => {
-                                  if (we.time) {
-                                      we.time.forEach(t => {
-                                          let type = "";
-                                          if (t.parameter) t.parameter.forEach(p => { 
-                                              if (p.parameterValue === '滿潮' || p.parameterValue === '乾潮') type = p.parameterValue; 
-                                          });
-                                          if (type && t.dataTime) {
-                                              // 【修復核心4】使用強健的 Regex：氣象署把時間從 "2024-05-12 12:00" 升級成了 "2024-05-12T12:00:00"
-                                              // 原本的 split(' ') 找不到空白會報錯，現在用正則同時相容新舊格式！
-                                              const timeMatch = t.dataTime.match(/[T\s](\d{2}:\d{2})/);
-                                              if (timeMatch) {
-                                                  tides.push(`${type} ${timeMatch[1]}`);
-                                              }
-                                          }
-                                      });
-                                  }
-                              });
-                              manualTide.value = tides.length > 0 ? tides.join(' / ') : "今日無預報資料，可手動輸入";
-                          } else {
-                              manualTide.value = "找不到今日潮汐，可手動輸入";
-                          }
-                      } else {
-                          manualTide.value = "無法鎖定測站，可手動輸入";
-                      }
+                      manualTide.value = tidesResult.join(' / ');
                   } else {
-                      manualTide.value = "氣象署拒絕連線，可手動輸入";
+                      manualTide.value = "此經緯度查無潮汐資料，可手動輸入";
                   }
+
                 } catch (c) { 
-                  // 就是這個 catch 抓到了原本的 TypeError 當機！
-                  console.error("CWA API Error:", c);
-                  manualTide.value = "網路連線失敗，可手動輸入"; 
+                  console.error("WeatherAPI 抓取失敗:", c);
+                  manualTide.value = `潮汐抓取失敗 (${c.message})，可手動輸入`; 
                 }
 
               } catch (error) { 
@@ -548,15 +509,11 @@
           if (!currentData.value && !notes.value && !photosBase64.value.length) { alert('請填寫內容喔！'); return; }
 
           saving.value = true;
-          const finalTideStr = currentData.value.nearestStation && !manualTide.value.includes(currentData.value.nearestStation) 
-                               ? `[${currentData.value.nearestStation}] ${manualTide.value}` 
-                               : manualTide.value;
-
           const payload = {
             action: 'add',
             dateString: new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' }),
             notes: notes.value,
-            manualTide: finalTideStr, 
+            manualTide: manualTide.value, 
             photosBase64: photosBase64.value, 
             ...(currentData.value || {})
           };
