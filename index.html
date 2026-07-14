@@ -119,7 +119,7 @@
               </p>
               <span v-if="manualTide.includes('連線') || manualTide.includes('正在')" class="text-[10px] text-blue-500 animate-pulse">精準匹配中...</span>
               <span v-else-if="manualTide.includes('滿潮') || manualTide.includes('乾潮')" class="text-[10px] text-emerald-600 font-bold">● 連線成功</span>
-              <span v-else class="text-[10px] text-red-500 font-bold">● 手動輸入模式</span>
+              <span v-else class="text-[10px] text-red-500 font-bold">● 手動輸入或查無資料</span>
             </div>
             
             <input type="text" v-model="manualTide" placeholder="無資料，可手動輸入" class="w-full bg-blue-50/50 border border-blue-100 rounded-xl py-3 px-3 focus:ring-2 focus:ring-blue-400 text-blue-900 font-black text-base transition-all">
@@ -310,7 +310,6 @@
   <script>
     const { createApp, ref, computed } = Vue;
 
-    // 🔥🔥🔥 記得確認 GAS 網址 🔥🔥🔥
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
     const CWA_API_KEY = 'CWA-293FA4CC-1663-419B-815A-CABE49E363F0';
 
@@ -326,7 +325,6 @@
       return '未知';
     };
 
-    // 雷達算距離的公式
     const getDistance = (lat1, lon1, lat2, lon2) => {
         const R = 6371; 
         const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -354,7 +352,6 @@
         const editingLog = ref(null);
         const editData = ref({ notes: '', manualTide: '', photosBase64: [] });
 
-        // 【修復】解救 NaN 當機的日期轉碼器
         const getMsTime = (ts) => {
             if (!ts) return 0;
             if (!isNaN(ts)) return Number(ts); 
@@ -435,18 +432,23 @@
                   tide: waveInfo
                 };
 
-                // 【修復】強迫組裝出 100% 正確的 YYYY-MM-DD，防範蘋果手機日期亂碼
                 const d = new Date();
                 const taipeiTime = d.getTime() + (d.getTimezoneOffset() * 60000) + (8 * 3600000); 
                 const tObj = new Date(taipeiTime);
                 const safeDate = `${tObj.getFullYear()}-${String(tObj.getMonth()+1).padStart(2,'0')}-${String(tObj.getDate()).padStart(2,'0')}`;
 
                 try {
-                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=${CWA_API_KEY}&timeFrom=${safeDate}T00:00:00&timeTo=${safeDate}T23:59:59`;
+                  // 【修復1】為帶有冒號的時間參數加上 URL 編碼，防止防火牆阻擋 (HTTP 400)
+                  const timeFrom = encodeURIComponent(`${safeDate}T00:00:00`);
+                  const timeTo = encodeURIComponent(`${safeDate}T23:59:59`);
+                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=${CWA_API_KEY}&timeFrom=${timeFrom}&timeTo=${timeTo}`;
+                  
                   const cwaRes = await fetch(cwaUrl);
+                  // 【修復2】攔截 HTTP 層級錯誤，避免後面解析 HTML 時產生 SyntaxError
+                  if (!cwaRes.ok) throw new Error(`HTTP Error: ${cwaRes.status}`);
+                  
                   const cwaData = await cwaRes.json();
                   
-                  // 【修復】超級嚴格防呆，絕對不讓程式發生 TypeError 當機
                   if (cwaData && (cwaData.success === "true" || cwaData.success === true) && cwaData.records && cwaData.records.location) {
                       let nearestLoc = null;
                       let minDistance = Infinity;
@@ -460,7 +462,6 @@
                           }
                       });
                       
-                      // 降級機制：如果雷達失效，用文字包含法硬抓 (例如左營區去比對出高雄)
                       if (!nearestLoc) {
                          const countyName = (geoData.principalSubdivision || geoData.city || "高雄").substring(0, 2);
                          nearestLoc = cwaData.records.location.find(l => l.locationName.includes(countyName));
@@ -468,8 +469,10 @@
                       
                       if (nearestLoc) {
                           currentData.value.nearestStation = nearestLoc.locationName;
-                          const todayData = nearestLoc.validTime.find(v => v.startTime.includes(safeDate));
-                          if (todayData) {
+                          // 【修復3】增加安全檢查，避免 validTime 不存在時崩潰
+                          const todayData = nearestLoc.validTime && nearestLoc.validTime.find(v => v.startTime.includes(safeDate));
+                          
+                          if (todayData && todayData.weatherElement) {
                               const tides = [];
                               todayData.weatherElement.forEach(we => {
                                   if (we.time) {
@@ -479,8 +482,12 @@
                                               if (p.parameterValue === '滿潮' || p.parameterValue === '乾潮') type = p.parameterValue; 
                                           });
                                           if (type && t.dataTime) {
-                                              const timeStr = t.dataTime.split(' ')[1].substring(0, 5); 
-                                              tides.push(`${type} ${timeStr}`);
+                                              // 【修復核心4】使用強健的 Regex：氣象署把時間從 "2024-05-12 12:00" 升級成了 "2024-05-12T12:00:00"
+                                              // 原本的 split(' ') 找不到空白會報錯，現在用正則同時相容新舊格式！
+                                              const timeMatch = t.dataTime.match(/[T\s](\d{2}:\d{2})/);
+                                              if (timeMatch) {
+                                                  tides.push(`${type} ${timeMatch[1]}`);
+                                              }
                                           }
                                       });
                                   }
@@ -496,12 +503,13 @@
                       manualTide.value = "氣象署拒絕連線，可手動輸入";
                   }
                 } catch (c) { 
-                  console.log("CWA API Error:", c);
+                  // 就是這個 catch 抓到了原本的 TypeError 當機！
+                  console.error("CWA API Error:", c);
                   manualTide.value = "網路連線失敗，可手動輸入"; 
                 }
 
               } catch (error) { 
-                  console.error(error);
+                  console.error("全域氣象抓取錯誤:", error);
                   alert('抓取氣象資料發生錯誤。'); 
               } 
               finally { loadingLocation.value = false; }
@@ -595,8 +603,6 @@
           try {
             const response = await fetch(GAS_URL);
             const data = await response.json();
-            
-            // 【修復】智慧判斷排序，最新的絕對在上面！
             logs.value = data.sort((a, b) => getMsTime(b.timestamp) - getMsTime(a.timestamp));
           } catch (error) {
              console.error("fetchLogs 錯誤:", error);
