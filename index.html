@@ -391,7 +391,7 @@
                   const taipeiDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' });
                   
                   // 【核心修正】直接告訴氣象署我要抓哪個縣市，檔案大小從 2MB 變成 20KB，瞬間載入絕不超時！
-                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=56761f5c-fefc-4e9d-921f-20cca1aa297e&locationName=${encodeURIComponent(cityName)}`;
+                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=CWA-293FA4CC-1663-419B-815A-CABE49E363F0&locationName=${encodeURIComponent(cityName)}`;
                   
                   const cwaRes = await fetch(cwaUrl);
                   const cwaData = await cwaRes.json();
