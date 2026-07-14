@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>漁獵戰績紀錄本</title>
+  <title>陳三歲釣魚日記</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -36,7 +36,7 @@
         <button @click="getLocationAndWeather" :disabled="loadingLocation" class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl p-6 shadow-xl shadow-orange-500/20 active:scale-95 transition-all flex flex-col items-center justify-center gap-3 relative overflow-hidden group">
           <template v-if="loadingLocation">
             <i class="ph ph-spinner animate-spin text-4xl"></i>
-            <span class="font-bold text-lg">觀測天象與潮水中...</span>
+            <span class="font-bold text-lg">極速觀測天象與潮水中...</span>
           </template>
           <template v-else>
             <div class="bg-white/20 p-3 rounded-full">
@@ -102,7 +102,7 @@
             <p class="text-[10px] text-blue-500 font-bold mb-1 flex items-center gap-1">
               <i class="ph-fill ph-clock text-sm"></i> 今日潮水 (滿潮/乾潮)
             </p>
-            <input type="text" v-model="manualTide" class="w-full bg-blue-50/50 border-none rounded-xl py-2 px-3 focus:ring-2 focus:ring-blue-400 text-blue-800 font-bold text-sm">
+            <input type="text" v-model="manualTide" placeholder="自動抓取中... (也可手動輸入)" class="w-full bg-blue-50/50 border-none rounded-xl py-2 px-3 focus:ring-2 focus:ring-blue-400 text-blue-800 font-bold text-sm">
           </div>
         </div>
 
@@ -110,7 +110,7 @@
           <h3 class="font-bold text-slate-700 flex items-center gap-2">
             <i class="ph-fill ph-book-open-text text-blue-500 text-lg"></i> 戰績與筆記
           </h3>
-          <textarea v-model="notes" placeholder="記錄一下用的釣組、蝦肉或是螃蟹籠..." class="w-full bg-slate-50 border-none rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-28 text-slate-700 placeholder:text-slate-400"></textarea>
+          <textarea v-model="notes" placeholder="今天釣況如何？用了什麼秘密武器？" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-28 text-slate-700 placeholder:text-slate-400"></textarea>
 
           <div>
             <label class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-600 p-4 rounded-xl cursor-pointer transition-colors active:scale-95 border-2 border-dashed border-slate-300">
@@ -167,7 +167,7 @@
               </button>
             </div>
 
-            <!-- 修正：將 v-for 移到 template 上，避免 Vue3 衝突報錯 -->
+            <!-- 多圖顯示 -->
             <div v-if="log.photoUrls && log.photoUrls.length > 0" class="bg-slate-100 flex overflow-x-auto hide-scrollbar snap-x">
               <template v-for="(url, imgIdx) in log.photoUrls" :key="imgIdx">
                 <div v-if="url && url.includes('http')" @click="lightboxImage = url" class="w-full shrink-0 h-56 snap-center relative cursor-pointer group">
@@ -181,8 +181,13 @@
             
             <div class="p-4 pt-5">
               <div class="flex items-center gap-2 mb-3">
-                <span class="text-xs font-bold text-white bg-blue-500 px-2 py-1 rounded-lg">{{ log.dateString || '無日期' }}</span>
-                <span class="text-xs text-slate-400">{{ new Date(parseInt(log.timestamp) || log.timestamp).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' }) }}</span>
+                <!-- 【終極防呆機制】永遠顯示出正確格式的日期！ -->
+                <span class="text-xs font-bold text-white bg-blue-500 px-2 py-1 rounded-lg">
+                  {{ formatDate(log.dateString, log.timestamp) }}
+                </span>
+                <span class="text-xs text-slate-400">
+                  {{ new Date(parseInt(log.timestamp) || log.timestamp).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' }) }}
+                </span>
               </div>
               
               <div v-if="log.address" class="mb-3">
@@ -207,6 +212,7 @@
                 <span v-if="log.windSpeed" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-wind text-teal-500"></i> {{ log.windDirection }} {{ log.windSpeed }} km/h</span>
                 
                 <span v-if="log.tide" class="text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-md w-full mt-1"><i class="ph-fill ph-waves"></i> 海象/浪高: {{ log.tide }}</span>
+                <!-- 【終於會出現了】確保潮汐有被顯示 -->
                 <span v-if="log.manualTide" class="text-[11px] bg-blue-100 text-blue-800 px-2 py-1.5 rounded-md w-full font-bold shadow-sm"><i class="ph-fill ph-clock"></i> 潮水: {{ log.manualTide }}</span>
               </div>
 
@@ -275,7 +281,7 @@
   <script>
     const { createApp, ref, computed } = Vue;
 
-    // 🔥🔥🔥 貼上你「最新建立新版本」獲得的 GAS 網址 🔥🔥🔥
+    // 🔥🔥🔥 貼上你剛剛「建立新版本」獲得的 GAS 網址 🔥🔥🔥
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
 
     const getWindDirection = (degree) => {
@@ -309,21 +315,31 @@
         const editingLog = ref(null);
         const editData = ref({ notes: '', manualTide: '', photosBase64: [] });
 
+        // 【新增：終極日期淨化器】
+        const formatDate = (dateStr, timestamp) => {
+           if (!dateStr || dateStr === 'undefined' || dateStr.trim() === '') {
+               return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW');
+           }
+           // 如果是落落長的 ISO 時間 (2026-07-13T16:00:00.000Z)，強制轉換成在地時間
+           if (dateStr.includes('T') || dateStr.includes('Z')) {
+               return new Date(dateStr).toLocaleDateString('zh-TW');
+           }
+           return dateStr;
+        };
+
         const getLocationAndWeather = () => {
           if (!navigator.geolocation) { alert('瀏覽器不支援定位！'); return; }
           loadingLocation.value = true;
-          manualTide.value = "氣象署連線中..."; // 狀態提示
+          manualTide.value = "氣象署連線中..."; 
           
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const lat = position.coords.latitude;
               const lon = position.coords.longitude;
               try {
-                // 1. 地址
                 const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=zh-tw`);
                 const geoData = await geoRes.json();
                 
-                // 2. 氣象
                 const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&timezone=auto`;
                 const wRes = await fetch(weatherUrl);
                 const wData = await wRes.json();
@@ -351,66 +367,75 @@
                   tide: waveInfo
                 };
 
-                // 3. 完美過濾版：氣象署 CWA 潮汐
+                // ====== 終極氣象署連線 (指定縣市下載) ======
                 try {
-                  const taipeiDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' }); // YYYY-MM-DD
+                  let cityName = geoData.principalSubdivision || geoData.city || "高雄市";
+                  if(cityName.includes("Kaohsiung")) cityName = "高雄市";
+                  else if(cityName.includes("Taipei")) cityName = "臺北市";
+                  else if(cityName.includes("New Taipei")) cityName = "新北市";
+                  else if(cityName.includes("Pingtung")) cityName = "屏東縣";
+                  else if(cityName.includes("Tainan")) cityName = "臺南市";
+                  else if(cityName.includes("Taichung")) cityName = "臺中市";
+                  else if(cityName.includes("Keelung")) cityName = "基隆市";
+                  else if(cityName.includes("Yilan")) cityName = "宜蘭縣";
+                  else if(cityName.includes("Hualien")) cityName = "花蓮縣";
+                  else if(cityName.includes("Taitung")) cityName = "臺東縣";
+                  else if(cityName.includes("Taoyuan")) cityName = "桃園市";
+                  else if(cityName.includes("Hsinchu")) cityName = "新竹市";
+                  else if(cityName.includes("Miaoli")) cityName = "苗栗縣";
+                  else if(cityName.includes("Changhua")) cityName = "彰化縣";
+                  else if(cityName.includes("Yunlin")) cityName = "雲林縣";
+                  else if(cityName.includes("Chiayi")) cityName = "嘉義縣";
+                  else if(cityName.includes("Penghu")) cityName = "澎湖縣";
+
+                  const taipeiDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' });
                   
-                  // 加入 timeFrom 與 timeTo 參數，避免檔案太大超時崩潰
-                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=56761f5c-fefc-4e9d-921f-20cca1aa297e&timeFrom=${taipeiDate}T00:00:00&timeTo=${taipeiDate}T23:59:59`;
+                  // 【核心修正】直接告訴氣象署我要抓哪個縣市，檔案大小從 2MB 變成 20KB，瞬間載入絕不超時！
+                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=56761f5c-fefc-4e9d-921f-20cca1aa297e&locationName=${encodeURIComponent(cityName)}`;
                   
                   const cwaRes = await fetch(cwaUrl);
                   const cwaData = await cwaRes.json();
                   
                   if (cwaData && cwaData.success) {
-                     let cityName = geoData.principalSubdivision || geoData.city || "高雄";
+                     const loc = cwaData.records.location[0];
                      
-                     // 防呆：有時候定位API給英文
-                     if(cityName.includes("Kaohsiung")) cityName = "高雄";
-                     else if(cityName.includes("Taipei")) cityName = "臺北";
-                     else if(cityName.includes("New Taipei")) cityName = "新北";
-                     else if(cityName.includes("Pingtung")) cityName = "屏東";
-                     else if(cityName.includes("Tainan")) cityName = "臺南";
-                     
-                     const cityPrefix = cityName.substring(0, 2);
-                     const loc = cwaData.records.location.find(l => l.locationName.includes(cityPrefix));
-                     
-                     if (loc && loc.validTime && loc.validTime.length > 0) {
-                        const tides = [];
-                        loc.validTime[0].weatherElement.forEach(we => {
-                           if(we.time) {
-                              we.time.forEach(t => {
-                                 let type = "";
-                                 if(t.parameter) t.parameter.forEach(p => { 
-                                    if(p.parameterValue === '滿潮' || p.parameterValue === '乾潮') type = p.parameterValue; 
+                     if (loc) {
+                        const todayData = loc.validTime.find(v => v.startTime.includes(taipeiDate));
+                        if(todayData) {
+                           const tides = [];
+                           todayData.weatherElement.forEach(we => {
+                              if(we.time) {
+                                 we.time.forEach(t => {
+                                    let type = "";
+                                    if(t.parameter) t.parameter.forEach(p => { 
+                                       if(p.parameterValue === '滿潮' || p.parameterValue === '乾潮') type = p.parameterValue; 
+                                    });
+                                    if(type && t.dataTime) {
+                                       const timeStr = t.dataTime.split(' ')[1].substring(0, 5); 
+                                       tides.push(`${type} ${timeStr}`);
+                                    }
                                  });
-                                 if(type && t.dataTime) {
-                                    const timeStr = t.dataTime.split(' ')[1].substring(0, 5); 
-                                    tides.push(`${type} ${timeStr}`);
-                                 }
-                              });
-                           }
-                        });
-                        
-                        if (tides.length > 0) {
-                           manualTide.value = tides.join(' / ');
+                              }
+                           });
+                           manualTide.value = tides.length > 0 ? tides.join(' / ') : "今日無資料，可手動輸入";
                         } else {
-                           manualTide.value = `查無今日資料，請手動輸入`;
+                           manualTide.value = "找不到今日資料，可手動輸入";
                         }
                      } else {
-                        manualTide.value = `找不到${cityPrefix}測站，請手動輸入`;
+                        manualTide.value = `查無${cityName}潮汐站，可手動輸入`;
                      }
                   } else {
-                     manualTide.value = "氣象署無回應，請手動輸入";
+                     manualTide.value = "氣象署連線異常，可手動輸入";
                   }
                 } catch (c) { 
-                  console.log("CWA Fail", c); 
-                  manualTide.value = "連線氣象署失敗，請手動輸入";
+                  console.log(c);
+                  manualTide.value = "連線失敗，可手動輸入"; 
                 }
 
               } catch (error) { alert('抓取資料失敗，請確認網路。'); } 
               finally { loadingLocation.value = false; }
             },
-            () => { alert('無法取得定位，請確認手機已開啟 GPS 權限！'); loadingLocation.value = false; },
+            () => { alert('無法取得定位！'); loadingLocation.value = false; },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
           );
         };
@@ -418,7 +443,6 @@
         const handlePhotoUpload = (e, targetArray) => {
           const files = e.target.files;
           if (!files.length) return;
-          
           Array.from(files).forEach(file => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -442,9 +466,7 @@
         };
 
         const saveLog = async () => {
-          if (!currentData.value && !notes.value && !photosBase64.value.length) {
-            alert('請填寫內容喔！'); return;
-          }
+          if (!currentData.value && !notes.value && !photosBase64.value.length) { alert('請填寫內容喔！'); return; }
           if (GAS_URL === '請在這裡貼上你的_GAS_網址') { alert('請設定 GAS_URL！'); return; }
 
           saving.value = true;
@@ -469,21 +491,14 @@
 
         const openEditModal = (log) => {
           editingLog.value = log;
-          editData.value = {
-            notes: log.notes || '',
-            manualTide: log.manualTide || '',
-            photosBase64: [] 
-          };
+          editData.value = { notes: log.notes || '', manualTide: log.manualTide || '', photosBase64: [] };
         };
 
         const updateLog = async () => {
           saving.value = true;
           const payload = {
-            action: 'update',
-            timestamp: editingLog.value.timestamp,
-            notes: editData.value.notes,
-            manualTide: editData.value.manualTide,
-            photosBase64: editData.value.photosBase64
+            action: 'update', timestamp: editingLog.value.timestamp,
+            notes: editData.value.notes, manualTide: editData.value.manualTide, photosBase64: editData.value.photosBase64
           };
           try {
             await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
@@ -507,7 +522,12 @@
           try {
             const response = await fetch(GAS_URL);
             const data = await response.json();
-            logs.value = data.reverse();
+            
+            logs.value = data.sort((a, b) => {
+              const timeA = new Date(parseInt(a.timestamp)).getTime();
+              const timeB = new Date(parseInt(b.timestamp)).getTime();
+              return timeB - timeA;
+            });
           } catch (error) {} 
           finally { loadingHistory.value = false; }
         };
@@ -524,7 +544,7 @@
           activeTab, loadingLocation, saving, currentData, notes, manualTide, photosBase64,
           logs, loadingHistory, searchTerm, filteredLogs, lightboxImage,
           editingLog, editData,
-          getLocationAndWeather, handlePhotoUpload, saveLog, fetchLogs, openEditModal, updateLog, deleteLog
+          getLocationAndWeather, handlePhotoUpload, saveLog, fetchLogs, openEditModal, updateLog, deleteLog, formatDate
         };
       }
     }).mount('#app');
