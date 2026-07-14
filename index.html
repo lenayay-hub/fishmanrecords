@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>漁獵戰績紀錄本</title>
+  <title>陳三歲釣魚日記</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -12,19 +12,19 @@
     body { -webkit-tap-highlight-color: transparent; }
     .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
     .fade-enter-from, .fade-leave-to { opacity: 0; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans pb-20">
 
   <div id="app" v-cloak>
-    <!-- Header -->
-    <header class="bg-blue-600 text-white p-5 rounded-b-3xl shadow-lg relative overflow-hidden">
+    <header class="bg-blue-600 text-white p-5 rounded-b-3xl shadow-lg relative overflow-hidden z-10">
       <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
         <i class="ph-fill ph-fish text-[150px] transform rotate-12 translate-x-4 -translate-y-4"></i>
       </div>
       <h1 class="text-2xl font-black tracking-wider flex items-center gap-2">
-        <i class="ph-fill ph-fish text-orange-400"></i>
-        漁獵戰績紀錄本
+        <i class="ph-fill ph-fish text-orange-400"></i>漁獵戰績紀錄本
       </h1>
       <p class="text-blue-100 text-sm mt-1 opacity-90">記錄每一次的海邊探險！</p>
     </header>
@@ -39,7 +39,7 @@
             <span class="font-bold text-lg">觀測天象與潮水中...</span>
           </template>
           <template v-else>
-            <div class="bg-white/20 p-3 rounded-full group-hover:scale-110 transition-transform">
+            <div class="bg-white/20 p-3 rounded-full">
               <i class="ph-fill ph-navigation-arrow text-4xl"></i>
             </div>
             <span class="font-black text-xl tracking-widest">一鍵發送定位 & 氣象</span>
@@ -54,7 +54,6 @@
             <div>
               <p class="text-xs text-slate-400 font-bold mb-1">目前位置</p>
               <p class="font-bold text-slate-700 leading-tight">{{ currentData.address }}</p>
-              <p class="text-[10px] text-slate-400 mt-1 font-mono">{{ currentData.lat.toFixed(5) }}, {{ currentData.lon.toFixed(5) }}</p>
             </div>
           </div>
 
@@ -70,29 +69,11 @@
               <i class="ph-fill ph-gauge text-blue-500 text-xl"></i>
               <div>
                 <p class="text-[10px] text-slate-500 font-bold">氣壓</p>
-                <p class="font-black text-slate-700">{{ currentData.pressure }} <span class="text-xs font-normal">hPa</span></p>
-              </div>
-            </div>
-            <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
-              <i class="ph-fill ph-wind text-teal-500 text-xl" :style="{ transform: `rotate(${currentData.windDirDeg}deg)` }"></i>
-              <div>
-                <p class="text-[10px] text-slate-500 font-bold">風速 / 風向</p>
-                <p class="font-black text-slate-700 text-sm">
-                  {{ currentData.windSpeed }} <span class="text-xs font-normal">km/h</span><br>
-                  <span class="text-xs text-teal-600">{{ currentData.windDirection }}</span>
-                </p>
-              </div>
-            </div>
-            <div class="flex items-center gap-2 bg-teal-50 p-3 rounded-xl">
-              <i class="ph-fill ph-waves text-teal-600 text-xl"></i>
-              <div>
-                <p class="text-[10px] text-teal-600 font-bold">浪高週期</p>
-                <p class="font-black text-teal-800 text-xs">{{ currentData.tide }}</p>
+                <p class="font-black text-slate-700">{{ currentData.pressure }} hPa</p>
               </div>
             </div>
           </div>
 
-          <!-- 手動與自動整合潮水輸入區 -->
           <div class="pt-3 border-t border-slate-50">
             <p class="text-[10px] text-blue-500 font-bold mb-1 flex items-center gap-1">
               <i class="ph-fill ph-clock text-sm"></i> 今日潮水 (已連線氣象署)
@@ -109,17 +90,21 @@
           <textarea v-model="notes" placeholder="記錄一下用的釣組、蝦肉或是螃蟹籠..." class="w-full bg-slate-50 border-none rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-28 text-slate-700 placeholder:text-slate-400"></textarea>
 
           <div>
+            <!-- 改為可以多選檔案 (multiple) -->
             <label class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-600 p-4 rounded-xl cursor-pointer transition-colors active:scale-95 border-2 border-dashed border-slate-300">
-              <i class="ph-fill ph-image text-2xl"></i>
-              <span class="font-bold">拍照 或 從相簿上傳</span>
-              <input type="file" accept="image/*" class="hidden" @change="handlePhotoUpload">
+              <i class="ph-fill ph-images text-2xl"></i>
+              <span class="font-bold">新增照片 (可多選)</span>
+              <input type="file" accept="image/*" multiple class="hidden" @change="handlePhotoUpload($event, photosBase64)">
             </label>
             
-            <div v-if="photoBase64" class="mt-4 relative rounded-xl overflow-hidden shadow-sm group">
-              <img :src="photoBase64" class="w-full h-48 object-cover">
-              <button @click="photoBase64 = ''" class="absolute top-2 right-2 bg-black/60 text-white p-2 rounded-full active:scale-95">
-                <i class="ph ph-x"></i>
-              </button>
+            <!-- 多圖預覽區 (橫向捲動) -->
+            <div v-if="photosBase64.length > 0" class="mt-4 flex gap-3 overflow-x-auto hide-scrollbar py-2">
+              <div v-for="(img, index) in photosBase64" :key="index" class="relative w-28 h-28 shrink-0 rounded-xl overflow-hidden shadow-sm group">
+                <img :src="img" class="w-full h-full object-cover">
+                <button @click="photosBase64.splice(index, 1)" class="absolute top-1 right-1 bg-black/60 text-white p-1.5 rounded-full active:scale-95">
+                  <i class="ph ph-x text-sm"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -127,7 +112,7 @@
         <button @click="saveLog" :disabled="saving" class="w-full bg-teal-500 text-white font-black text-lg py-4 rounded-2xl shadow-lg shadow-teal-500/30 active:scale-95 transition-transform flex items-center justify-center gap-2 disabled:opacity-70 disabled:active:scale-100">
           <i v-if="saving" class="ph ph-spinner animate-spin text-2xl"></i>
           <i v-else class="ph-fill ph-floppy-disk text-2xl"></i>
-          {{ saving ? '儲存上傳中...' : '儲存這筆紀錄' }}
+          {{ saving ? '資料上傳中...' : '儲存這筆紀錄' }}
         </button>
       </div>
 
@@ -148,32 +133,45 @@
              <i class="ph ph-spinner animate-spin text-4xl mb-2"></i><p>載入你的輝煌戰績中...</p>
           </div>
           <div v-else-if="filteredLogs.length === 0" class="text-center text-slate-400 py-10">
-            <i class="ph-fill ph-fish text-5xl mx-auto mb-3 opacity-20"></i><p>目前還沒有符合的紀錄喔！</p>
+            <i class="ph-fill ph-fish text-5xl mx-auto mb-3 opacity-20"></i><p>目前還沒有紀錄喔！</p>
           </div>
           
           <div v-else v-for="(log, index) in filteredLogs" :key="index" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 relative">
             
-            <div v-if="log.photoUrl && log.photoUrl.includes('http')" class="h-48 w-full overflow-hidden bg-slate-100 relative group cursor-pointer" @click="lightboxImage = log.photoUrl">
-              <img :src="log.photoUrl" loading="lazy" class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <i class="ph ph-magnifying-glass-plus text-white text-3xl"></i>
+            <!-- 右上角選單按鈕 (編輯/刪除) -->
+            <div class="absolute top-3 right-3 z-10 flex gap-2">
+              <button @click="openEditModal(log)" class="bg-white/80 backdrop-blur text-blue-600 p-2 rounded-full shadow-sm active:scale-95">
+                <i class="ph-fill ph-pencil-simple"></i>
+              </button>
+              <button @click="deleteLog(log.timestamp)" class="bg-white/80 backdrop-blur text-red-500 p-2 rounded-full shadow-sm active:scale-95">
+                <i class="ph-fill ph-trash"></i>
+              </button>
+            </div>
+
+            <!-- 多圖顯示區塊 (橫向捲動) -->
+            <div v-if="log.photoUrls && log.photoUrls.length > 0" class="bg-slate-100 flex overflow-x-auto hide-scrollbar snap-x">
+              <div v-for="url in log.photoUrls" v-if="url.includes('http')" @click="lightboxImage = url" class="w-full shrink-0 h-56 snap-center relative cursor-pointer group">
+                <img :src="url" loading="lazy" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <i class="ph ph-magnifying-glass-plus text-white text-3xl"></i>
+                </div>
               </div>
             </div>
             
-            <div class="p-4">
-              <div class="flex items-center justify-between mb-2">
+            <div class="p-4 pt-5">
+              <div class="flex items-center gap-2 mb-3">
                 <span class="text-xs font-bold text-white bg-blue-500 px-2 py-1 rounded-lg">{{ log.dateString || '無日期' }}</span>
-                <span class="text-xs text-slate-400">{{ new Date(log.timestamp).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' }) }}</span>
+                <span class="text-xs text-slate-400">{{ new Date(parseInt(log.timestamp) || log.timestamp).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' }) }}</span>
               </div>
               
               <div v-if="log.address" class="mb-3">
                 <p class="font-bold text-slate-700 flex items-start gap-1 text-sm">
                   <i class="ph-fill ph-map-pin text-orange-500 text-lg shrink-0 mt-0.5"></i> {{ log.address }}
                 </p>
-                <p class="text-[10px] text-slate-400 font-mono pl-6 mt-0.5">緯度: {{ Number(log.lat).toFixed(5) }}, 經度: {{ Number(log.lon).toFixed(5) }}</p>
               </div>
 
-              <div v-if="log.lat && log.lon" class="flex gap-2 mb-4 pl-6">
+              <!-- 導航 -->
+              <div v-if="log.lat && log.lon" class="flex gap-2 mb-4">
                 <a :href="`https://www.google.com/maps/dir/?api=1&destination=${log.lat},${log.lon}`" target="_blank" class="flex-1 bg-blue-50 text-blue-600 py-2 rounded-xl text-center text-xs font-bold flex justify-center items-center gap-1 active:scale-95 transition-transform">
                   <i class="ph-fill ph-google-logo text-sm"></i> Google 導航
                 </a>
@@ -184,10 +182,6 @@
 
               <div class="flex flex-wrap gap-2 mb-3">
                 <span v-if="log.temperature" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-thermometer text-blue-500"></i> {{ log.temperature }}°C</span>
-                <span v-if="log.pressure" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-gauge text-blue-500"></i> {{ log.pressure }} hPa</span>
-                <span v-if="log.windSpeed" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-wind text-teal-500"></i> {{ log.windDirection }} {{ log.windSpeed }} km/h</span>
-                
-                <span v-if="log.tide" class="text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-md w-full mt-1"><i class="ph-fill ph-waves"></i> 浪高週期: {{ log.tide }}</span>
                 <span v-if="log.manualTide" class="text-[11px] bg-blue-100 text-blue-800 px-2 py-1.5 rounded-md w-full font-bold shadow-sm"><i class="ph-fill ph-clock"></i> 潮水: {{ log.manualTide }}</span>
               </div>
 
@@ -198,6 +192,7 @@
       </div>
     </main>
 
+    <!-- 底部導航 -->
     <nav class="fixed bottom-0 w-full bg-white border-t border-slate-100 flex justify-around p-3 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] z-40 max-w-md left-1/2 -translate-x-1/2">
       <button @click="activeTab = 'add'" :class="`flex flex-col items-center p-2 rounded-xl w-24 transition-colors ${activeTab === 'add' ? 'text-blue-600' : 'text-slate-400'}`">
         <div :class="`p-1 rounded-full mb-1 ${activeTab === 'add' ? 'bg-blue-50' : ''}`"><i class="ph-fill ph-pencil-simple text-2xl"></i></div>
@@ -209,12 +204,53 @@
       </button>
     </nav>
     
+    <!-- ================= 燈箱全螢幕元件 ================= -->
     <transition name="fade">
-      <div v-if="lightboxImage" class="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-2" @click="lightboxImage = null">
-        <button class="absolute top-6 right-6 text-white p-2 bg-white/10 rounded-full active:scale-95 z-50">
+      <div v-if="lightboxImage" class="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-2" @click="lightboxImage = null">
+        <button class="absolute top-6 right-6 text-white p-2 bg-white/10 rounded-full active:scale-95 z-[70]">
           <i class="ph ph-x text-xl"></i>
         </button>
         <img :src="lightboxImage" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl">
+      </div>
+    </transition>
+
+    <!-- ================= 編輯彈出視窗 ================= -->
+    <transition name="fade">
+      <div v-if="editingLog" class="fixed inset-0 z-[50] bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl overflow-y-auto max-h-[90vh]">
+          <h3 class="font-black text-xl text-slate-800 border-b pb-3">編輯戰績</h3>
+          
+          <div>
+            <label class="text-xs font-bold text-slate-500 mb-1 block">潮汐時間</label>
+            <input type="text" v-model="editData.manualTide" class="w-full bg-slate-50 rounded-xl p-3 focus:ring-2 focus:ring-blue-400">
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-slate-500 mb-1 block">筆記內容</label>
+            <textarea v-model="editData.notes" class="w-full bg-slate-50 rounded-xl p-3 h-24 focus:ring-2 focus:ring-blue-400"></textarea>
+          </div>
+
+          <div>
+            <label class="text-xs font-bold text-slate-500 mb-1 block">補充更多照片</label>
+            <label class="flex items-center justify-center gap-2 bg-blue-50 text-blue-600 p-3 rounded-xl cursor-pointer">
+              <i class="ph-fill ph-image text-xl"></i> 上傳新照片
+              <input type="file" accept="image/*" multiple class="hidden" @change="handlePhotoUpload($event, editData.photosBase64)">
+            </label>
+            <div v-if="editData.photosBase64.length > 0" class="mt-3 flex gap-2 overflow-x-auto">
+              <div v-for="(img, idx) in editData.photosBase64" class="relative w-16 h-16 shrink-0 rounded-lg overflow-hidden">
+                <img :src="img" class="w-full h-full object-cover">
+                <button @click="editData.photosBase64.splice(idx,1)" class="absolute top-0 right-0 bg-black/60 text-white p-1 rounded-bl-lg"><i class="ph ph-x text-xs"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3 pt-3">
+            <button @click="editingLog = null" class="flex-1 bg-slate-100 text-slate-600 font-bold py-3 rounded-xl">取消</button>
+            <button @click="updateLog" class="flex-1 bg-blue-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">
+              <i v-if="saving" class="ph ph-spinner animate-spin"></i> 儲存修改
+            </button>
+          </div>
+        </div>
       </div>
     </transition>
 
@@ -223,20 +259,8 @@
   <script>
     const { createApp, ref, computed } = Vue;
 
-    // 🔥🔥🔥 【超重要設定】 🔥🔥🔥 貼上你部署獲得的 GAS 網址
+    // 🔥🔥🔥 貼上你剛剛「建立新版本」獲得的 GAS 網址 🔥🔥🔥
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
-
-    const getWindDirection = (degree) => {
-      if (degree >= 337.5 || degree < 22.5) return '北風';
-      if (degree >= 22.5 && degree < 67.5) return '東北風';
-      if (degree >= 67.5 && degree < 112.5) return '東風';
-      if (degree >= 112.5 && degree < 157.5) return '東南風';
-      if (degree >= 157.5 && degree < 202.5) return '南風';
-      if (degree >= 202.5 && degree < 247.5) return '西南風';
-      if (degree >= 247.5 && degree < 292.5) return '西風';
-      if (degree >= 292.5 && degree < 337.5) return '西北風';
-      return '未知';
-    };
 
     createApp({
       setup() {
@@ -244,13 +268,20 @@
         const loadingLocation = ref(false);
         const saving = ref(false);
         const currentData = ref(null);
+        
+        // 新增欄位
         const notes = ref('');
         const manualTide = ref(''); 
-        const photoBase64 = ref('');
+        const photosBase64 = ref([]); // 變成陣列，支援多圖
+        
         const logs = ref([]);
         const loadingHistory = ref(false);
         const searchTerm = ref('');
         const lightboxImage = ref(null);
+
+        // 編輯狀態
+        const editingLog = ref(null);
+        const editData = ref({ notes: '', manualTide: '', photosBase64: [] });
 
         const getLocationAndWeather = () => {
           if (!navigator.geolocation) { alert('瀏覽器不支援定位！'); return; }
@@ -260,151 +291,150 @@
               const lat = position.coords.latitude;
               const lon = position.coords.longitude;
               try {
-                // 1. 抓取地理位置
+                // 1. 地址
                 const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=zh-tw`);
                 const geoData = await geoRes.json();
-                const address = geoData.locality || geoData.city || '未知沿海地區';
-
-                // 2. 抓取 Open-Meteo 氣象
-                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&timezone=auto`;
-                const weatherRes = await fetch(weatherUrl);
-                const weatherData = await weatherRes.json();
-                const wCurrent = weatherData.current;
                 
-                let waveInfo = "無觀測站資料";
-                try {
-                  const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=wave_height,wave_direction,wave_period&timezone=auto`;
-                  const marineRes = await fetch(marineUrl);
-                  const marineData = await marineRes.json();
-                  if (marineData.current && marineData.current.wave_height !== null) {
-                    waveInfo = `${marineData.current.wave_height}m | ${marineData.current.wave_period}s`;
-                  }
-                } catch (e) {}
-
+                // 2. 氣象
+                const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,surface_pressure,wind_speed_10m&timezone=auto`);
+                const wData = await wRes.json();
+                
                 currentData.value = {
                   lat, lon,
-                  address: `${geoData.principalSubdivision || ''} ${address}`,
-                  temperature: wCurrent.temperature_2m,
-                  humidity: wCurrent.relative_humidity_2m,
-                  pressure: wCurrent.surface_pressure,
-                  windSpeed: wCurrent.wind_speed_10m,
-                  windDirDeg: wCurrent.wind_direction_10m,
-                  windDirection: getWindDirection(wCurrent.wind_direction_10m),
-                  tide: waveInfo,
+                  address: geoData.locality || geoData.city || '未知沿海地區',
+                  temperature: wData.current?.temperature_2m,
+                  pressure: wData.current?.surface_pressure,
                 };
 
-                // 3. 抓取氣象署 CWA 潮汐資料
+                // 3. 更穩定的氣象署 API 抓法 (拿掉時間限制，自己過濾今天)
                 try {
-                  let cityName = geoData.principalSubdivision || "";
-                  if (cityName) {
-                    let cityPrefix = cityName.substring(0, 2); // 抓前兩個字 (例如"高雄")
-                    const todayStr = new Date().toISOString().split('T')[0];
-                    
-                    // 使用你的專屬 API Key，並限制只抓今天的資料以增加速度
-                    const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=56761f5c-fefc-4e9d-921f-20cca1aa297e&timeFrom=${todayStr}T00:00:00&timeTo=${todayStr}T23:59:59`;
-                    
-                    const cwaRes = await fetch(cwaUrl);
-                    const cwaData = await cwaRes.json();
-                    
-                    if (cwaData && cwaData.success === "true") {
-                      const locations = cwaData.records.location;
-                      // 尋找符合使用者所在縣市的測站
-                      const loc = locations.find(l => l.locationName.includes(cityPrefix));
-                      
-                      if (loc && loc.validTime && loc.validTime.length > 0) {
-                        const todayValid = loc.validTime[0];
+                  const todayStr = new Date().toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' }).replace('/', '/'); // 例如 07/14
+                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=56761f5c-fefc-4e9d-921f-20cca1aa297e`;
+                  const cwaRes = await fetch(cwaUrl);
+                  const cwaData = await cwaRes.json();
+                  
+                  if (cwaData && cwaData.success) {
+                     // 尋找包含縣市名稱的測站 (例如 "高雄")
+                     const cityPrefix = (geoData.principalSubdivision || "高雄").substring(0, 2);
+                     const loc = cwaData.records.location.find(l => l.locationName.includes(cityPrefix));
+                     
+                     if (loc) {
                         const tides = [];
-                        
-                        todayValid.weatherElement.forEach(we => {
-                          if (we.time) {
-                            we.time.forEach(t => {
-                              let type = "";
-                              if (t.parameter) {
-                                t.parameter.forEach(p => {
-                                  if (p.parameterValue === '滿潮' || p.parameterValue === '乾潮') type = p.parameterValue;
-                                });
+                        // 尋找符合今天日期的資料
+                        const todayData = loc.validTime.find(v => v.startTime.includes(new Date().toISOString().split('T')[0]));
+                        if(todayData) {
+                           todayData.weatherElement.forEach(we => {
+                              if(we.time) {
+                                 we.time.forEach(t => {
+                                    let type = "";
+                                    if(t.parameter) t.parameter.forEach(p => { if(p.parameterValue === '滿潮' || p.parameterValue === '乾潮') type = p.parameterValue; });
+                                    if(type && t.dataTime) {
+                                       const timeStr = t.dataTime.split(' ')[1].substring(0, 5); 
+                                       tides.push(`${type} ${timeStr}`);
+                                    }
+                                 });
                               }
-                              if (type && t.dataTime) {
-                                // 將 2026-07-14 06:12:00 轉換為 06:12
-                                const timeStr = t.dataTime.split(' ')[1].substring(0, 5); 
-                                tides.push(`${type} ${timeStr}`);
-                              }
-                            });
-                          }
-                        });
-                        
-                        // 將解析出來的潮汐填入輸入框
-                        if (tides.length > 0) {
-                          manualTide.value = tides.join(' / ');
+                           });
+                           if (tides.length > 0) manualTide.value = tides.join(' / ');
                         }
-                      }
-                    }
+                     }
                   }
-                } catch (cwaError) {
-                  console.log("CWA API 潮汐抓取失敗:", cwaError);
-                }
+                } catch (c) { console.log("CWA Fail", c); }
 
-              } catch (error) { alert('抓取資料失敗，請確認網路。'); } 
+              } catch (error) { alert('抓取資料失敗。'); } 
               finally { loadingLocation.value = false; }
             },
-            (error) => { alert('無法取得定位，請確認已開啟 GPS 權限！'); loadingLocation.value = false; },
+            () => { alert('無法取得定位！'); loadingLocation.value = false; },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
           );
         };
 
-        const handlePhotoUpload = (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = (event) => {
-            const img = new Image();
-            img.src = event.target.result;
-            img.onload = () => {
-              const canvas = document.createElement('canvas');
-              const MAX_WIDTH = 800;
-              let scaleSize = 1;
-              if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
-              canvas.width = img.width * scaleSize;
-              canvas.height = img.height * scaleSize;
-              const ctx = canvas.getContext('2d');
-              ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-              photoBase64.value = canvas.toDataURL('image/jpeg', 0.6);
+        // 處理多圖上傳
+        const handlePhotoUpload = (e, targetArray) => {
+          const files = e.target.files;
+          if (!files.length) return;
+          
+          Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+              const img = new Image();
+              img.src = event.target.result;
+              img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 800;
+                let scaleSize = 1;
+                if (img.width > MAX_WIDTH) { scaleSize = MAX_WIDTH / img.width; }
+                canvas.width = img.width * scaleSize;
+                canvas.height = img.height * scaleSize;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                targetArray.push(canvas.toDataURL('image/jpeg', 0.7));
+              };
             };
-          };
+          });
+          e.target.value = ''; // 清空 input 讓下次可以選同一張
         };
 
         const saveLog = async () => {
-          if (!currentData.value && !notes.value && !photoBase64.value) {
-            alert('請填寫筆記或進行定位喔！'); return;
+          if (!currentData.value && !notes.value && !photosBase64.value.length) {
+            alert('請填寫內容喔！'); return;
           }
-          if (GAS_URL === '請在這裡貼上你的_GAS_網址') { alert('請先設定 GAS_URL！'); return; }
+          if (GAS_URL === '請在這裡貼上你的_GAS_網址') { alert('請設定 GAS_URL！'); return; }
 
           saving.value = true;
           const payload = {
+            action: 'add',
             dateString: new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' }),
             notes: notes.value,
-            photoBase64: photoBase64.value,
             manualTide: manualTide.value, 
+            photosBase64: photosBase64.value, // 送出陣列
             ...(currentData.value || {})
           };
 
           try {
-            await fetch(GAS_URL, {
-              method: 'POST',
-              body: JSON.stringify(payload),
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-            });
-
-            alert('紀錄成功發送至雲端！🎉');
-            currentData.value = null;
-            notes.value = '';
-            manualTide.value = '';
-            photoBase64.value = '';
+            await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+            alert('紀錄大豐收！🎉');
+            currentData.value = null; notes.value = ''; manualTide.value = ''; photosBase64.value = [];
             await fetchLogs();
             activeTab.value = 'history';
-          } catch (error) { alert('儲存失敗，請檢查網路。'); } 
+          } catch (e) { alert('儲存失敗。'); } 
           finally { saving.value = false; }
+        };
+
+        // 編輯相關功能
+        const openEditModal = (log) => {
+          editingLog.value = log;
+          editData.value = {
+            notes: log.notes || '',
+            manualTide: log.manualTide || '',
+            photosBase64: [] // 準備用來裝「新增加」的照片
+          };
+        };
+
+        const updateLog = async () => {
+          saving.value = true;
+          const payload = {
+            action: 'update',
+            timestamp: editingLog.value.timestamp,
+            notes: editData.value.notes,
+            manualTide: editData.value.manualTide,
+            photosBase64: editData.value.photosBase64
+          };
+          try {
+            await fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload) });
+            editingLog.value = null;
+            await fetchLogs();
+          } catch(e) { alert('更新失敗'); }
+          finally { saving.value = false; }
+        };
+
+        const deleteLog = async (timestamp) => {
+          if(!confirm('確定要刪除這筆輝煌戰績嗎？刪了就沒囉！')) return;
+          try {
+            await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', timestamp }) });
+            await fetchLogs();
+          } catch(e) { alert('刪除失敗'); }
         };
 
         const fetchLogs = async () => {
@@ -414,7 +444,7 @@
             const response = await fetch(GAS_URL);
             const data = await response.json();
             logs.value = data.reverse();
-          } catch (error) { alert('讀取歷史紀錄失敗。'); } 
+          } catch (error) {} 
           finally { loadingHistory.value = false; }
         };
 
@@ -427,9 +457,10 @@
         });
 
         return {
-          activeTab, loadingLocation, saving, currentData, notes, manualTide, photoBase64,
+          activeTab, loadingLocation, saving, currentData, notes, manualTide, photosBase64,
           logs, loadingHistory, searchTerm, filteredLogs, lightboxImage,
-          getLocationAndWeather, handlePhotoUpload, saveLog, fetchLogs
+          editingLog, editData,
+          getLocationAndWeather, handlePhotoUpload, saveLog, fetchLogs, openEditModal, updateLog, deleteLog
         };
       }
     }).mount('#app');
