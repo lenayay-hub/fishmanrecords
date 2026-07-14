@@ -1,9 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>陳三歲釣魚日記</title>
+  <title>漁獵戰績紀錄本</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -57,6 +58,7 @@
             </div>
           </div>
 
+          <!-- 完整的氣象資訊區塊 -->
           <div class="grid grid-cols-2 gap-3 pt-3 border-t border-slate-50">
             <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
               <i class="ph-fill ph-thermometer text-blue-500 text-xl"></i>
@@ -66,10 +68,34 @@
               </div>
             </div>
             <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
+              <i class="ph-fill ph-drop text-blue-500 text-xl"></i>
+              <div>
+                <p class="text-[10px] text-slate-500 font-bold">濕度</p>
+                <p class="font-black text-slate-700">{{ currentData.humidity }}%</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
+              <i class="ph-fill ph-wind text-teal-500 text-xl" :style="{ transform: `rotate(${currentData.windDirDeg}deg)` }"></i>
+              <div>
+                <p class="text-[10px] text-slate-500 font-bold">風速 / 風向</p>
+                <p class="font-black text-slate-700 text-sm">
+                  {{ currentData.windSpeed }} <span class="text-xs font-normal">km/h</span><br>
+                  <span class="text-xs text-teal-600">{{ currentData.windDirection }}</span>
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 bg-blue-50 p-3 rounded-xl">
               <i class="ph-fill ph-gauge text-blue-500 text-xl"></i>
               <div>
                 <p class="text-[10px] text-slate-500 font-bold">氣壓</p>
                 <p class="font-black text-slate-700">{{ currentData.pressure }} hPa</p>
+              </div>
+            </div>
+            <div class="col-span-2 flex items-center gap-2 bg-teal-50 p-3 rounded-xl">
+              <i class="ph-fill ph-waves text-teal-600 text-xl"></i>
+              <div>
+                <p class="text-[10px] text-teal-600 font-bold">海象觀測 (浪高 / 週期)</p>
+                <p class="font-black text-teal-800 text-sm">{{ currentData.tide }}</p>
               </div>
             </div>
           </div>
@@ -86,18 +112,14 @@
           <h3 class="font-bold text-slate-700 flex items-center gap-2">
             <i class="ph-fill ph-book-open-text text-blue-500 text-lg"></i> 戰績與筆記
           </h3>
-          
           <textarea v-model="notes" placeholder="記錄一下用的釣組、蝦肉或是螃蟹籠..." class="w-full bg-slate-50 border-none rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none h-28 text-slate-700 placeholder:text-slate-400"></textarea>
 
           <div>
-            <!-- 改為可以多選檔案 (multiple) -->
             <label class="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-600 p-4 rounded-xl cursor-pointer transition-colors active:scale-95 border-2 border-dashed border-slate-300">
               <i class="ph-fill ph-images text-2xl"></i>
               <span class="font-bold">新增照片 (可多選)</span>
               <input type="file" accept="image/*" multiple class="hidden" @change="handlePhotoUpload($event, photosBase64)">
             </label>
-            
-            <!-- 多圖預覽區 (橫向捲動) -->
             <div v-if="photosBase64.length > 0" class="mt-4 flex gap-3 overflow-x-auto hide-scrollbar py-2">
               <div v-for="(img, index) in photosBase64" :key="index" class="relative w-28 h-28 shrink-0 rounded-xl overflow-hidden shadow-sm group">
                 <img :src="img" class="w-full h-full object-cover">
@@ -148,7 +170,7 @@
               </button>
             </div>
 
-            <!-- 多圖顯示區塊 (橫向捲動) -->
+            <!-- 多圖顯示區塊 -->
             <div v-if="log.photoUrls && log.photoUrls.length > 0" class="bg-slate-100 flex overflow-x-auto hide-scrollbar snap-x">
               <div v-for="url in log.photoUrls" v-if="url.includes('http')" @click="lightboxImage = url" class="w-full shrink-0 h-56 snap-center relative cursor-pointer group">
                 <img :src="url" loading="lazy" class="w-full h-full object-cover">
@@ -180,8 +202,14 @@
                 </a>
               </div>
 
+              <!-- 完整的歷史紀錄標籤 -->
               <div class="flex flex-wrap gap-2 mb-3">
                 <span v-if="log.temperature" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-thermometer text-blue-500"></i> {{ log.temperature }}°C</span>
+                <span v-if="log.humidity" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-drop text-blue-500"></i> {{ log.humidity }}%</span>
+                <span v-if="log.pressure" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-gauge text-blue-500"></i> {{ log.pressure }} hPa</span>
+                <span v-if="log.windSpeed" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-wind text-teal-500"></i> {{ log.windDirection }} {{ log.windSpeed }} km/h</span>
+                
+                <span v-if="log.tide" class="text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-md w-full mt-1"><i class="ph-fill ph-waves"></i> 海象/浪高: {{ log.tide }}</span>
                 <span v-if="log.manualTide" class="text-[11px] bg-blue-100 text-blue-800 px-2 py-1.5 rounded-md w-full font-bold shadow-sm"><i class="ph-fill ph-clock"></i> 潮水: {{ log.manualTide }}</span>
               </div>
 
@@ -204,32 +232,25 @@
       </button>
     </nav>
     
-    <!-- ================= 燈箱全螢幕元件 ================= -->
     <transition name="fade">
       <div v-if="lightboxImage" class="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center p-2" @click="lightboxImage = null">
-        <button class="absolute top-6 right-6 text-white p-2 bg-white/10 rounded-full active:scale-95 z-[70]">
-          <i class="ph ph-x text-xl"></i>
-        </button>
+        <button class="absolute top-6 right-6 text-white p-2 bg-white/10 rounded-full active:scale-95 z-[70]"><i class="ph ph-x text-xl"></i></button>
         <img :src="lightboxImage" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl">
       </div>
     </transition>
 
-    <!-- ================= 編輯彈出視窗 ================= -->
     <transition name="fade">
       <div v-if="editingLog" class="fixed inset-0 z-[50] bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl overflow-y-auto max-h-[90vh]">
           <h3 class="font-black text-xl text-slate-800 border-b pb-3">編輯戰績</h3>
-          
           <div>
             <label class="text-xs font-bold text-slate-500 mb-1 block">潮汐時間</label>
             <input type="text" v-model="editData.manualTide" class="w-full bg-slate-50 rounded-xl p-3 focus:ring-2 focus:ring-blue-400">
           </div>
-
           <div>
             <label class="text-xs font-bold text-slate-500 mb-1 block">筆記內容</label>
             <textarea v-model="editData.notes" class="w-full bg-slate-50 rounded-xl p-3 h-24 focus:ring-2 focus:ring-blue-400"></textarea>
           </div>
-
           <div>
             <label class="text-xs font-bold text-slate-500 mb-1 block">補充更多照片</label>
             <label class="flex items-center justify-center gap-2 bg-blue-50 text-blue-600 p-3 rounded-xl cursor-pointer">
@@ -243,7 +264,6 @@
               </div>
             </div>
           </div>
-
           <div class="flex gap-3 pt-3">
             <button @click="editingLog = null" class="flex-1 bg-slate-100 text-slate-600 font-bold py-3 rounded-xl">取消</button>
             <button @click="updateLog" class="flex-1 bg-blue-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2">
@@ -262,6 +282,18 @@
     // 🔥🔥🔥 貼上你剛剛「建立新版本」獲得的 GAS 網址 🔥🔥🔥
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
 
+    const getWindDirection = (degree) => {
+      if (degree >= 337.5 || degree < 22.5) return '北風';
+      if (degree >= 22.5 && degree < 67.5) return '東北風';
+      if (degree >= 67.5 && degree < 112.5) return '東風';
+      if (degree >= 112.5 && degree < 157.5) return '東南風';
+      if (degree >= 157.5 && degree < 202.5) return '南風';
+      if (degree >= 202.5 && degree < 247.5) return '西南風';
+      if (degree >= 247.5 && degree < 292.5) return '西風';
+      if (degree >= 292.5 && degree < 337.5) return '西北風';
+      return '未知';
+    };
+
     createApp({
       setup() {
         const activeTab = ref('add');
@@ -269,17 +301,15 @@
         const saving = ref(false);
         const currentData = ref(null);
         
-        // 新增欄位
         const notes = ref('');
         const manualTide = ref(''); 
-        const photosBase64 = ref([]); // 變成陣列，支援多圖
+        const photosBase64 = ref([]); 
         
         const logs = ref([]);
         const loadingHistory = ref(false);
         const searchTerm = ref('');
         const lightboxImage = ref(null);
 
-        // 編輯狀態
         const editingLog = ref(null);
         const editData = ref({ notes: '', manualTide: '', photosBase64: [] });
 
@@ -295,33 +325,54 @@
                 const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=zh-tw`);
                 const geoData = await geoRes.json();
                 
-                // 2. 氣象
-                const wRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,surface_pressure,wind_speed_10m&timezone=auto`);
+                // 2. 氣象 (把漏掉的 API 參數補回來了)
+                const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&timezone=auto`;
+                const wRes = await fetch(weatherUrl);
                 const wData = await wRes.json();
+                const wCurrent = wData.current;
+
+                // 抓浪高
+                let waveInfo = "無觀測站資料";
+                try {
+                  const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=wave_height,wave_period&timezone=auto`;
+                  const marineRes = await fetch(marineUrl);
+                  const marineData = await marineRes.json();
+                  if (marineData.current && marineData.current.wave_height !== null) {
+                    waveInfo = `${marineData.current.wave_height}m | 週期 ${marineData.current.wave_period}s`;
+                  }
+                } catch(e) {}
                 
                 currentData.value = {
                   lat, lon,
                   address: geoData.locality || geoData.city || '未知沿海地區',
-                  temperature: wData.current?.temperature_2m,
-                  pressure: wData.current?.surface_pressure,
+                  temperature: wCurrent.temperature_2m,
+                  humidity: wCurrent.relative_humidity_2m,
+                  pressure: wCurrent.surface_pressure,
+                  windSpeed: wCurrent.wind_speed_10m,
+                  windDirDeg: wCurrent.wind_direction_10m,
+                  windDirection: getWindDirection(wCurrent.wind_direction_10m),
+                  tide: waveInfo
                 };
 
-                // 3. 更穩定的氣象署 API 抓法 (拿掉時間限制，自己過濾今天)
+                // 3. 氣象署 CWA 潮汐 (修正了台灣時區的誤差，保證抓得到今天的)
                 try {
-                  const todayStr = new Date().toLocaleDateString('zh-TW', { month: '2-digit', day: '2-digit' }).replace('/', '/'); // 例如 07/14
+                  // 強制取得台灣時區的「今天日期」(格式 YYYY-MM-DD)
+                  const taipeiDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' });
+                  
                   const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=56761f5c-fefc-4e9d-921f-20cca1aa297e`;
                   const cwaRes = await fetch(cwaUrl);
                   const cwaData = await cwaRes.json();
                   
                   if (cwaData && cwaData.success) {
-                     // 尋找包含縣市名稱的測站 (例如 "高雄")
-                     const cityPrefix = (geoData.principalSubdivision || "高雄").substring(0, 2);
-                     const loc = cwaData.records.location.find(l => l.locationName.includes(cityPrefix));
+                     const cityName = geoData.principalSubdivision || geoData.city || geoData.locality || "高雄";
+                     const cityPrefix = cityName.substring(0, 2);
                      
+                     // 尋找符合縣市的測站
+                     const loc = cwaData.records.location.find(l => l.locationName.includes(cityPrefix));
                      if (loc) {
                         const tides = [];
-                        // 尋找符合今天日期的資料
-                        const todayData = loc.validTime.find(v => v.startTime.includes(new Date().toISOString().split('T')[0]));
+                        // 尋找「台灣時間的今天」
+                        const todayData = loc.validTime.find(v => v.startTime.includes(taipeiDate));
                         if(todayData) {
                            todayData.weatherElement.forEach(we => {
                               if(we.time) {
@@ -339,17 +390,16 @@
                         }
                      }
                   }
-                } catch (c) { console.log("CWA Fail", c); }
+                } catch (c) { console.log("CWA API 失敗:", c); }
 
-              } catch (error) { alert('抓取資料失敗。'); } 
+              } catch (error) { alert('抓取資料失敗，請確認網路。'); } 
               finally { loadingLocation.value = false; }
             },
-            () => { alert('無法取得定位！'); loadingLocation.value = false; },
+            () => { alert('無法取得定位，請確認手機已開啟 GPS 權限！'); loadingLocation.value = false; },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
           );
         };
 
-        // 處理多圖上傳
         const handlePhotoUpload = (e, targetArray) => {
           const files = e.target.files;
           if (!files.length) return;
@@ -373,7 +423,7 @@
               };
             };
           });
-          e.target.value = ''; // 清空 input 讓下次可以選同一張
+          e.target.value = '';
         };
 
         const saveLog = async () => {
@@ -388,7 +438,7 @@
             dateString: new Date().toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' }),
             notes: notes.value,
             manualTide: manualTide.value, 
-            photosBase64: photosBase64.value, // 送出陣列
+            photosBase64: photosBase64.value, 
             ...(currentData.value || {})
           };
 
@@ -402,13 +452,12 @@
           finally { saving.value = false; }
         };
 
-        // 編輯相關功能
         const openEditModal = (log) => {
           editingLog.value = log;
           editData.value = {
             notes: log.notes || '',
             manualTide: log.manualTide || '',
-            photosBase64: [] // 準備用來裝「新增加」的照片
+            photosBase64: [] 
           };
         };
 
