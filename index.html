@@ -181,7 +181,6 @@
             
             <div class="p-4 pt-5">
               <div class="flex items-center gap-2 mb-3">
-                <!-- 【終極防呆機制】永遠顯示出正確格式的日期！ -->
                 <span class="text-xs font-bold text-white bg-blue-500 px-2 py-1 rounded-lg">
                   {{ formatDate(log.dateString, log.timestamp) }}
                 </span>
@@ -212,7 +211,6 @@
                 <span v-if="log.windSpeed" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-1 rounded-md"><i class="ph-fill ph-wind text-teal-500"></i> {{ log.windDirection }} {{ log.windSpeed }} km/h</span>
                 
                 <span v-if="log.tide" class="text-[10px] bg-teal-50 text-teal-700 px-2 py-1 rounded-md w-full mt-1"><i class="ph-fill ph-waves"></i> 海象/浪高: {{ log.tide }}</span>
-                <!-- 【終於會出現了】確保潮汐有被顯示 -->
                 <span v-if="log.manualTide" class="text-[11px] bg-blue-100 text-blue-800 px-2 py-1.5 rounded-md w-full font-bold shadow-sm"><i class="ph-fill ph-clock"></i> 潮水: {{ log.manualTide }}</span>
               </div>
 
@@ -281,7 +279,7 @@
   <script>
     const { createApp, ref, computed } = Vue;
 
-    // 🔥🔥🔥 貼上你剛剛「建立新版本」獲得的 GAS 網址 🔥🔥🔥
+    // 🔥🔥🔥 這裡不用動，我幫你保留了你的 GAS 網址 🔥🔥🔥
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbw1Jr0NH6dLT7Hv4ZKsyHRBKBeRh_wEwRU_QDRgnHRoOdE2we0fQLjchCZHj9NTP0-5/exec'; 
 
     const getWindDirection = (degree) => {
@@ -315,12 +313,10 @@
         const editingLog = ref(null);
         const editData = ref({ notes: '', manualTide: '', photosBase64: [] });
 
-        // 【新增：終極日期淨化器】
         const formatDate = (dateStr, timestamp) => {
            if (!dateStr || dateStr === 'undefined' || dateStr.trim() === '') {
                return new Date(parseInt(timestamp)).toLocaleDateString('zh-TW');
            }
-           // 如果是落落長的 ISO 時間 (2026-07-13T16:00:00.000Z)，強制轉換成在地時間
            if (dateStr.includes('T') || dateStr.includes('Z')) {
                return new Date(dateStr).toLocaleDateString('zh-TW');
            }
@@ -328,9 +324,14 @@
         };
 
         const getLocationAndWeather = () => {
-          if (!navigator.geolocation) { alert('瀏覽器不支援定位！'); return; }
           loadingLocation.value = true;
           manualTide.value = "氣象署連線中..."; 
+          
+          if (!navigator.geolocation) { 
+              alert('瀏覽器不支援定位！'); 
+              loadingLocation.value = false;
+              return; 
+          }
           
           navigator.geolocation.getCurrentPosition(
             async (position) => {
@@ -367,39 +368,41 @@
                   tide: waveInfo
                 };
 
-                // ====== 終極氣象署連線 (指定縣市下載) ======
+                // ====== 終極修復：不傳縣市，直接過濾，保證不當機 ======
                 try {
-                  let cityName = geoData.principalSubdivision || geoData.city || "高雄市";
-                  if(cityName.includes("Kaohsiung")) cityName = "高雄市";
-                  else if(cityName.includes("Taipei")) cityName = "臺北市";
-                  else if(cityName.includes("New Taipei")) cityName = "新北市";
-                  else if(cityName.includes("Pingtung")) cityName = "屏東縣";
-                  else if(cityName.includes("Tainan")) cityName = "臺南市";
-                  else if(cityName.includes("Taichung")) cityName = "臺中市";
-                  else if(cityName.includes("Keelung")) cityName = "基隆市";
-                  else if(cityName.includes("Yilan")) cityName = "宜蘭縣";
-                  else if(cityName.includes("Hualien")) cityName = "花蓮縣";
-                  else if(cityName.includes("Taitung")) cityName = "臺東縣";
-                  else if(cityName.includes("Taoyuan")) cityName = "桃園市";
-                  else if(cityName.includes("Hsinchu")) cityName = "新竹市";
-                  else if(cityName.includes("Miaoli")) cityName = "苗栗縣";
-                  else if(cityName.includes("Changhua")) cityName = "彰化縣";
-                  else if(cityName.includes("Yunlin")) cityName = "雲林縣";
-                  else if(cityName.includes("Chiayi")) cityName = "嘉義縣";
-                  else if(cityName.includes("Penghu")) cityName = "澎湖縣";
+                  let cityName = geoData.principalSubdivision || geoData.city || "高雄";
+                  if(cityName.includes("Kaohsiung")) cityName = "高雄";
+                  else if(cityName.includes("Taipei")) cityName = "臺北";
+                  else if(cityName.includes("New Taipei")) cityName = "新北";
+                  else if(cityName.includes("Pingtung")) cityName = "屏東";
+                  else if(cityName.includes("Tainan")) cityName = "臺南";
+                  else if(cityName.includes("Taichung")) cityName = "臺中";
+                  else if(cityName.includes("Keelung")) cityName = "基隆";
+                  else if(cityName.includes("Yilan")) cityName = "宜蘭";
+                  else if(cityName.includes("Hualien")) cityName = "花蓮";
+                  else if(cityName.includes("Taitung")) cityName = "臺東";
+                  else if(cityName.includes("Taoyuan")) cityName = "桃園";
+                  else if(cityName.includes("Hsinchu")) cityName = "新竹";
+                  else if(cityName.includes("Miaoli")) cityName = "苗栗";
+                  else if(cityName.includes("Changhua")) cityName = "彰化";
+                  else if(cityName.includes("Yunlin")) cityName = "雲林";
+                  else if(cityName.includes("Chiayi")) cityName = "嘉義";
+                  else if(cityName.includes("Penghu")) cityName = "澎湖";
 
                   const taipeiDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' });
+                  const cityPrefix = cityName.substring(0, 2);
                   
-                  // 【核心修正】直接告訴氣象署我要抓哪個縣市，檔案大小從 2MB 變成 20KB，瞬間載入絕不超時！
-                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=CWA-293FA4CC-1663-419B-815A-CABE49E363F0&locationName=${encodeURIComponent(cityName)}`;
+                  // 去掉 locationName 參數，只用日期縮小檔案大小！
+                  const cwaUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-A0021-001?Authorization=CWA-293FA4CC-1663-419B-815A-CABE49E363F0&timeFrom=${taipeiDate}T00:00:00&timeTo=${taipeiDate}T23:59:59`;
                   
                   const cwaRes = await fetch(cwaUrl);
                   const cwaData = await cwaRes.json();
                   
                   if (cwaData && cwaData.success) {
-                     const loc = cwaData.records.location[0];
+                     // 在 JavaScript 裡自己找測站，這樣就算找不到也不會當機！
+                     const loc = cwaData.records.location.find(l => l.locationName.includes(cityPrefix));
                      
-                     if (loc) {
+                     if (loc && loc.validTime) {
                         const todayData = loc.validTime.find(v => v.startTime.includes(taipeiDate));
                         if(todayData) {
                            const tides = [];
@@ -422,7 +425,7 @@
                            manualTide.value = "找不到今日資料，可手動輸入";
                         }
                      } else {
-                        manualTide.value = `查無${cityName}潮汐站，可手動輸入`;
+                        manualTide.value = `查無${cityPrefix}潮汐站，可手動輸入`;
                      }
                   } else {
                      manualTide.value = "氣象署連線異常，可手動輸入";
@@ -432,10 +435,13 @@
                   manualTide.value = "連線失敗，可手動輸入"; 
                 }
 
-              } catch (error) { alert('抓取資料失敗，請確認網路。'); } 
+              } catch (error) { 
+                  console.error(error);
+                  alert('抓取資料發生錯誤。'); 
+              } 
               finally { loadingLocation.value = false; }
             },
-            () => { alert('無法取得定位！'); loadingLocation.value = false; },
+            () => { alert('無法取得定位！請檢查手機設定。'); loadingLocation.value = false; },
             { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
           );
         };
